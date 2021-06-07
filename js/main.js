@@ -67,11 +67,11 @@ function createObjectsArray(quantity) {
     };
   }
 
-  for (let index = 0; index < quantity; index++) {
+  for (let i = 0; i < quantity; i++) {
     const obj = {
-      id: index + 1,
-      url: `photos/${index + 1}.jpg`,
-      description: `Тестовое описание фотографии номер ${index + 1}`,
+      id: i + 1,
+      url: `photos/${i + 1}.jpg`,
+      description: `Тестовое описание фотографии номер ${i + 1}`,
       likes: getRandomInt(LIKES_MIN, LIKES_MAX),
       comments: new Array(getRandomInt(1, 5)).fill(null).map(() => createCommentSection()),
     };
