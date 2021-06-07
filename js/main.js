@@ -22,38 +22,48 @@ function checkStringLength(string, maxLength) {
 
 checkStringLength('test', 10);
 
+const NAMES = [
+  'Павел',
+  'Александр',
+  'Алексей',
+  'Николай',
+  'Пётр',
+  'Виталий',
+  'Анна',
+  'Анастасия',
+  'Ирина',
+  'Ольга',
+  'Ксения',
+  'Алина',
+];
+
+const COMMENTS = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
+];
+
+const AVATARS_QUANTITY = 6;
+const LIKES_MIN = 15;
+const LIKES_MAX = 200;
+
 function createObjectsArray(quantity) {
   const objectsArray = [];
   let commentsCounter = 0;
-  const names = [
-    'Павел',
-    'Александр',
-    'Алексей',
-    'Николай',
-    'Пётр',
-    'Виталий',
-    'Анна',
-    'Анастасия',
-    'Ирина',
-    'Ольга',
-    'Ксения',
-    'Алина',
-  ];
-  const comments = [
-    'Всё отлично!',
-    'В целом всё неплохо. Но не всё.',
-    'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-    'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
-  ];
+
+  function getRandomArrElement(arr) {
+    return arr[getRandomInt(0, arr.length - 1)];
+  }
 
   function createCommentSection() {
     return {
       id: commentsCounter += 1,
-      avatar: `img/avatar-${getRandomInt(1, 6)}`,
-      message: comments[getRandomInt(0, 5)],
-      name: names[getRandomInt(0, 11)],
+      avatar: `img/avatar-${getRandomInt(1, AVATARS_QUANTITY)}`,
+      message: getRandomInt(1,2) > 1 ? `${getRandomArrElement(COMMENTS)}. ${getRandomArrElement(COMMENTS)}` : getRandomArrElement(COMMENTS),
+      name: getRandomArrElement(NAMES),
     };
   }
 
@@ -62,7 +72,7 @@ function createObjectsArray(quantity) {
       id: index + 1,
       url: `photos/${index + 1}.jpg`,
       description: `Тестовое описание фотографии номер ${index + 1}`,
-      likes: getRandomInt(15, 200),
+      likes: getRandomInt(LIKES_MIN, LIKES_MAX),
       comments: new Array(getRandomInt(1, 5)).fill(null).map(() => createCommentSection()),
     };
     objectsArray.push(obj);
