@@ -1,3 +1,5 @@
+import {createObjectsArray} from './create-photo/create-photo-description.js';
+
 const NAMES = [
   'Павел',
   'Александр',
@@ -27,4 +29,6 @@ const AVATARS_QUANTITY = 6;
 const LIKES_MIN = 15;
 const LIKES_MAX = 200;
 
-export {NAMES, COMMENTS, PHOTOS_QUANTITY, AVATARS_QUANTITY, LIKES_MIN, LIKES_MAX};
+const POSTS = createObjectsArray(PHOTOS_QUANTITY);
+
+export {NAMES, COMMENTS, POSTS, PHOTOS_QUANTITY, AVATARS_QUANTITY, LIKES_MIN, LIKES_MAX};

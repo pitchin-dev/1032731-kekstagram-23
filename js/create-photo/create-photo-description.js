@@ -1,5 +1,5 @@
-import {NAMES, COMMENTS, PHOTOS_QUANTITY, AVATARS_QUANTITY, LIKES_MIN, LIKES_MAX} from './data.js';
-import {getRandomInt} from './utils.js';
+import {NAMES, COMMENTS, AVATARS_QUANTITY, LIKES_MIN, LIKES_MAX} from '../data.js';
+import {getRandomInt} from '../utils/utils.js';
 
 function createObjectsArray(quantity) {
   const objectsArray = [];
@@ -31,4 +31,4 @@ function createObjectsArray(quantity) {
   return objectsArray;
 }
 
-createObjectsArray(PHOTOS_QUANTITY);
+export {createObjectsArray};
