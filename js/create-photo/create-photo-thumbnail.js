@@ -15,4 +15,3 @@ picturesDescriptionArray.forEach(({url, likes, comments}) => {
 });
 
 pictures.appendChild(picturesFragment);
-console.log(pictures);
