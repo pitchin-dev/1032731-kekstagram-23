@@ -1,8 +1,8 @@
-import {POSTS} from '../data.js';
+import {posts} from '../data.js';
 
 const picture = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
-const picturesDescriptionArray = POSTS;
+const picturesDescriptionArray = posts;
 const picturesFragment = document.createDocumentFragment();
 
 picturesDescriptionArray.forEach(({url, likes, comments}) => {
