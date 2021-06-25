@@ -19,4 +19,3 @@ picturesDescriptionArray.forEach((item) => {
 });
 
 pictures.appendChild(picturesFragment);
-console.log(pictures);
