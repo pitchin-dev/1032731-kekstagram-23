@@ -1,3 +1,2 @@
-import './create-photo.js';
-import './utils.js';
+import './create-photo/create-photo-thumbnail.js';
 import './data.js';
