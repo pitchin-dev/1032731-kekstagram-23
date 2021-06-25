@@ -1,8 +1,4 @@
-import {posts} from '../data.js';
-
 const picture = document.querySelector('#picture').content.querySelector('.picture');
-const pictures = document.querySelector('.pictures');
-const picturesDescriptionArray = posts;
 
 function createPhotoThumbnail(arr) {
   const pictureFragment = document.createDocumentFragment();
@@ -16,6 +12,4 @@ function createPhotoThumbnail(arr) {
   return pictureFragment;
 }
 
-picturesDescriptionArray.forEach((item) => {
-  pictures.appendChild(createPhotoThumbnail(item));
-});
+export {createPhotoThumbnail};
