@@ -8,6 +8,20 @@ const commentsLoader = bigPicture.querySelector('.comments-loader');
 const closeBtn = bigPicture.querySelector('.big-picture__cancel');
 const commentsBlock = bigPicture.querySelector('.social__comments');
 
+function hideTarget() {
+  bigPicture.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  closeBtn.removeEventListener('click', hideTarget);
+}
+
+function hideByEsc(e) {
+  if (e.key === 'Escape') {
+    bigPicture.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    document.removeEventListener('keydown', hideByEsc);
+  }
+}
+
 function createComment(comment) {
   const commentElement = document.createElement('li');
   commentElement.classList.add('social__comment');
@@ -20,15 +34,13 @@ function createComment(comment) {
   commentText.classList.add('social__text');
   commentElement.appendChild(commentText);
 
-  const commentFragment = document.createDocumentFragment();
-
   commentAvatar.src = comment.avatar;
   commentText.textContent = comment.message;
-  commentFragment.appendChild(commentElement);
-  return commentFragment;
+  return commentElement;
 }
 
 function showFullPhoto(photo) {
+  const commentsBlockFragment = document.createDocumentFragment();
   document.body.classList.add('modal-open');
   bigPicture.classList.remove('hidden');
   commentsLoader.classList.add('hidden');
@@ -39,27 +51,16 @@ function showFullPhoto(photo) {
   likes.textContent = photo.likes;
   descriptionBlock.textContent = photo.description;
 
-  //удаляю изначальное содержимое commentsBlock, т.к. не реализован пустой template и изначально в разметке есть ненужные комментарии
   commentsBlock.innerHTML = '';
+
   photo.comments.forEach((comment) => {
-    commentsBlock.appendChild(createComment(comment));
+    commentsBlockFragment.appendChild(createComment(comment));
   });
+
+  commentsBlock.appendChild(commentsBlockFragment);
+
+  closeBtn.addEventListener('click', hideTarget);
+  document.addEventListener('keydown', hideByEsc);
 }
-
-closeBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  commentsBlock.innerHTML = '';
-});
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    e.preventDefault();
-    bigPicture.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    commentsBlock.innerHTML = '';
-  }
-});
 
 export {showFullPhoto};
