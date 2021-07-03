@@ -8,18 +8,19 @@ const commentsLoader = bigPicture.querySelector('.comments-loader');
 const closeBtn = bigPicture.querySelector('.big-picture__cancel');
 const commentsBlock = bigPicture.querySelector('.social__comments');
 
-function hideTarget() {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  closeBtn.removeEventListener('click', hideTarget);
-}
-
 function hideByEsc(e) {
   if (e.key === 'Escape') {
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', hideByEsc);
   }
+}
+
+function hideTarget() {
+  bigPicture.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  closeBtn.removeEventListener('click', hideTarget);
+  document.removeEventListener('keydown', hideByEsc);
 }
 
 function createComment(comment) {
