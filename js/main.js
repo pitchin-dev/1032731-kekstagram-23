@@ -1,2 +1,2 @@
-import './create-photo/create-photo-thumbnail.js';
+import './photo-gallery.js';
 import './data.js';

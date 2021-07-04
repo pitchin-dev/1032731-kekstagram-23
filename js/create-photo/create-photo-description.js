@@ -12,7 +12,7 @@ function createObjectsArray(quantity) {
   function createCommentSection() {
     return {
       id: commentsCounter += 1,
-      avatar: `img/avatar-${getRandomInt(1, AVATARS_QUANTITY)}`,
+      avatar: `img/avatar-${getRandomInt(1, AVATARS_QUANTITY)}.svg`,
       message: getRandomInt(1,2) > 1 ? `${getRandomArrElement(COMMENTS)}. ${getRandomArrElement(COMMENTS)}` : getRandomArrElement(COMMENTS),
       name: getRandomArrElement(NAMES),
     };
