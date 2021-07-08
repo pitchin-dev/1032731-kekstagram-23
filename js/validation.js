@@ -67,9 +67,9 @@ function closeEditPictureForm () {
   editPictureForm.classList.add('hidden');
   document.body.classList.remove('modal-open');
   editPictureCancelButton.removeEventListener('click', closeEditPictureForm);
-  hashtagsInput.removeEventListener('input', getHashtags);
+  hashtagsInput.removeEventListener('change', getHashtags);
   hashtagsInput.removeEventListener('keydown', onInputFocused);
-  commentInput.removeEventListener('input',checkComment);
+  commentInput.removeEventListener('change',checkComment);
   commentInput.removeEventListener('keydown', onInputFocused);
 
 }
