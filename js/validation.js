@@ -1,4 +1,4 @@
-import {checkStringLength} from './util.js';
+import {checkStringLength} from './utils/utils.js';
 
 const COMMENT_LENGTH_MAX = 140;
 
@@ -14,7 +14,6 @@ const ErrorMessages = {
   HASHTAG_TEMPLATE: 'Хэштеги не соответствуют требованиям. Хэштег должен начинаться с знака #, не может содержать запрещённые символы: пробелы, спецсимволы, символы пунктуации, эмодзи.',
   COMMENT_LENGTH: 'Длина комментария не должна быть больше, чем 140 символов',
 };
-Object.freeze(ErrorMessages);
 
 function checkUniqueHashtags (hashtags) {
   const uniqueValue = [];
