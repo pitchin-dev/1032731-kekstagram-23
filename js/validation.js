@@ -90,7 +90,7 @@ function showEditPictureForm () {
   commentInput.addEventListener('change', checkComment);
   commentInput.addEventListener('keydown', onInputFocused);
   document.addEventListener('keydown', onEscBtnPress);
-};
+}
 
 uploadPictureInput.addEventListener('change', () => {
   if (uploadPictureInput.value) {
