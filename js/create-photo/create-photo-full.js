@@ -1,3 +1,5 @@
+import {showPopup, hidePopup} from '../utils/utils.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('img');
 const likes = bigPicture.querySelector('.likes-count');
@@ -10,16 +12,13 @@ const commentsBlock = bigPicture.querySelector('.social__comments');
 
 function onEscBtnPress(e) {
   if (e.key === 'Escape') {
-    bigPicture.classList.add('hidden');
-    document.body.classList.remove('modal-open');
+    hidePopup(bigPicture, 'modal-open', 'hidden');
     document.removeEventListener('keydown', onEscBtnPress);
   }
 }
 
 function onCloseBtnClick() {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  closeBtn.removeEventListener('click', onCloseBtnClick);
+  hidePopup(bigPicture, 'modal-open', 'hidden');
   document.removeEventListener('keydown', onEscBtnPress);
 }
 
@@ -42,8 +41,7 @@ function createComment(comment) {
 
 function showFullPhoto(photo) {
   const commentsBlockFragment = document.createDocumentFragment();
-  document.body.classList.add('modal-open');
-  bigPicture.classList.remove('hidden');
+  showPopup(bigPicture, 'modal-open', 'hidden');
   commentsLoader.classList.add('hidden');
   socialCommentCount.classList.add('hidden');
 

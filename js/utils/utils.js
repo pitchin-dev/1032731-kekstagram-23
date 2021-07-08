@@ -17,4 +17,14 @@ function checkStringLength(string, maxLength) {
   return string.length <= maxLength;
 }
 
-export {getRandomInt, checkStringLength};
+function showPopup(popup, showClass, hideClass) {
+  popup.classList.remove(hideClass);
+  document.body.classList.add(showClass);
+}
+
+function hidePopup(popup, showClass, hideClass) {
+  popup.classList.add(hideClass);
+  document.body.classList.remove(showClass);
+}
+
+export {getRandomInt, checkStringLength, showPopup, hidePopup};
