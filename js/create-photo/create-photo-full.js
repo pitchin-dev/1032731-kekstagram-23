@@ -65,10 +65,12 @@ function showFullPhoto(photo) {
       photo.comments.slice(commentCounter, commentCounter + 5).forEach((comment) => {
         commentsBlockFragment.appendChild(createComment(comment));
       });
+
       commentsBlock.appendChild(commentsBlockFragment);
       socialCommentCount.innerHTML = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
       commentCounter += 5;
     }
+
     if (commentsBlock.children.length === photo.comments.length) {
       commentsLoader.classList.add('hidden');
     }
