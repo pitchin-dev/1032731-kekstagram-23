@@ -24,7 +24,7 @@ function createObjectsArray(quantity) {
       url: `photos/${i + 1}.jpg`,
       description: `Тестовое описание фотографии номер ${i + 1}`,
       likes: getRandomInt(LIKES_MIN, LIKES_MAX),
-      comments: new Array(getRandomInt(1, 15)).fill(null).map(() => createCommentSection()),
+      comments: new Array(getRandomInt(0, 15)).fill(null).map(() => createCommentSection()),
     };
     objectsArray.push(obj);
   }
