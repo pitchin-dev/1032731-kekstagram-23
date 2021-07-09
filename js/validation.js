@@ -18,13 +18,14 @@ const ERROR_MESSAGES = {
 function checkUniqueHashtags (hashtags) {
   const uniqueValue = [];
 
-  hashtags.forEach((hashtag) => {
-    const value = hashtag.toLowerCase();
+  for (let index = 0; index < hashtags.length; ++index) {
+    const value = hashtags[index].toLowerCase();
     if (uniqueValue.indexOf(value) !== -1) {
       return false;
     }
     uniqueValue.push(value);
-  });
+  }
+
   return true;
 }
 
