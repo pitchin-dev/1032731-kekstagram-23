@@ -1,3 +1,5 @@
+import {showPopup, hidePopup} from '../utils/utils.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('img');
 const likes = bigPicture.querySelector('.likes-count');
@@ -8,19 +10,16 @@ const commentsLoader = bigPicture.querySelector('.comments-loader');
 const closeBtn = bigPicture.querySelector('.big-picture__cancel');
 const commentsBlock = bigPicture.querySelector('.social__comments');
 
-function hideByEsc(e) {
+function onEscBtnPress(e) {
   if (e.key === 'Escape') {
-    bigPicture.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    document.removeEventListener('keydown', hideByEsc);
+    hidePopup(bigPicture, 'modal-open', 'hidden');
+    document.removeEventListener('keydown', onEscBtnPress);
   }
 }
 
-function hideTarget() {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  closeBtn.removeEventListener('click', hideTarget);
-  document.removeEventListener('keydown', hideByEsc);
+function onCloseBtnClick() {
+  hidePopup(bigPicture, 'modal-open', 'hidden');
+  document.removeEventListener('keydown', onEscBtnPress);
 }
 
 function createComment(comment) {
@@ -42,8 +41,7 @@ function createComment(comment) {
 
 function showFullPhoto(photo) {
   const commentsBlockFragment = document.createDocumentFragment();
-  document.body.classList.add('modal-open');
-  bigPicture.classList.remove('hidden');
+  showPopup(bigPicture, 'modal-open', 'hidden');
   commentsLoader.classList.add('hidden');
   socialCommentCount.classList.add('hidden');
 
@@ -60,8 +58,8 @@ function showFullPhoto(photo) {
 
   commentsBlock.appendChild(commentsBlockFragment);
 
-  closeBtn.addEventListener('click', hideTarget);
-  document.addEventListener('keydown', hideByEsc);
+  closeBtn.addEventListener('click', onCloseBtnClick);
+  document.addEventListener('keydown', onEscBtnPress);
 }
 
 export {showFullPhoto};
