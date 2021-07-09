@@ -57,6 +57,10 @@ function showFullPhoto(photo) {
   });
 
   commentsBlock.appendChild(commentsBlockFragment);
+  //на случай, если комментарий всего один и кнопку надо спрятать сразу
+  if (commentsBlock.children.length === photo.comments.length) {
+    commentsLoader.classList.add('hidden');
+  }
   socialCommentCount.innerHTML = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
   commentCounter += 5;
 
