@@ -17,6 +17,7 @@ const ERROR_MESSAGES = {
 
 function checkUniqueHashtags (hashtags) {
   const uniqueValue = [];
+
   for (let index = 0; index < hashtags.length; ++index) {
     const value = hashtags[index].toLowerCase();
     if (uniqueValue.indexOf(value) !== -1) {
@@ -24,6 +25,7 @@ function checkUniqueHashtags (hashtags) {
     }
     uniqueValue.push(value);
   }
+
   return true;
 }
 
