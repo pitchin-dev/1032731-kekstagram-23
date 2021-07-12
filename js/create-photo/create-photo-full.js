@@ -63,7 +63,11 @@ function showFullPhoto(photo) {
     commentsLoader.classList.add('hidden');
   }
 
-  socialCommentCount.innerHTML = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
+  if (photo.comments.length) {
+    socialCommentCount.innerHTML = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
+  } else {
+    socialCommentCount.innerHTML = 'Нет комментариев';
+  }
   commentCounter += BLOCK_SIZE;
 
   commentsLoader.addEventListener('click', () => {
