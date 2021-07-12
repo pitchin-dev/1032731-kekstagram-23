@@ -1,4 +1,4 @@
-import {NAMES, COMMENTS, AVATARS_QUANTITY, LIKES_MIN, LIKES_MAX} from '../data.js';
+import {NAMES, COMMENTS, AVATARS_QUANTITY, LIKES_MIN, LIKES_MAX, COMMENTS_MIN, COMMENTS_MAX} from '../data.js';
 import {getRandomInt} from '../utils/utils.js';
 
 function createObjectsArray(quantity) {
@@ -24,7 +24,7 @@ function createObjectsArray(quantity) {
       url: `photos/${i + 1}.jpg`,
       description: `Тестовое описание фотографии номер ${i + 1}`,
       likes: getRandomInt(LIKES_MIN, LIKES_MAX),
-      comments: new Array(getRandomInt(0, 15)).fill(null).map(() => createCommentSection()),
+      comments: new Array(getRandomInt(COMMENTS_MIN, COMMENTS_MAX)).fill(null).map(() => createCommentSection()),
     };
     objectsArray.push(obj);
   }

@@ -1,12 +1,21 @@
 import {checkStringLength} from './utils/utils.js';
+import {createSlider, addEffectOfPicture, removeEffectOfPicture, slider} from './noUISlider.js';
 
 const COMMENT_LENGTH_MAX = 140;
+const SCALE_VALUE_MIN = 25;
+const SCALE_VALUE_MAX = 100;
+const SCALE_VALUE_CHANGE = 25;
 
 const uploadPictureInput = document.querySelector('#upload-file');
 const editPictureForm = document.querySelector('.img-upload__overlay');
 const editPictureCancelButton = editPictureForm.querySelector('#upload-cancel');
 const hashtagsInput = editPictureForm.querySelector('.text__hashtags');
 const commentInput = editPictureForm.querySelector('.text__description');
+const smallScaleControl = editPictureForm.querySelector('.scale__control--smaller');
+const bigScaleControl = editPictureForm.querySelector('.scale__control--bigger');
+const scaleControlValue = editPictureForm.querySelector('.scale__control--value');
+const picturePreview = editPictureForm.querySelector('.img-upload__preview img');
+const effectPictureControl = document.querySelector('.effects__list');
 
 const ERROR_MESSAGES = {
   HASHTAG_SUM: 'Нельзя указать больше 5 (пяти) хэштегов',
@@ -14,6 +23,31 @@ const ERROR_MESSAGES = {
   HASHTAG_TEMPLATE: 'Хэштеги не соответствуют требованиям. Хэштег должен начинаться с знака #, не может содержать запрещённые символы: пробелы, спецсимволы, символы пунктуации, эмодзи.',
   COMMENT_LENGTH: 'Длина комментария не должна быть больше, чем 140 (сто сорок) символов',
 };
+
+function zoomIn(value) {
+  if (value < SCALE_VALUE_MAX) {
+    const scaleValue = value + SCALE_VALUE_CHANGE;
+    scaleControlValue.value = `${scaleValue}%`;
+    picturePreview.style.transform = `scale(${(scaleValue)/100})`;
+  }
+}
+
+function zoomOut (value) {
+  if (value > SCALE_VALUE_MIN) {
+    const scaleValue = value - SCALE_VALUE_CHANGE;
+    scaleControlValue.value = `${scaleValue}%`;
+    picturePreview.style.transform = `scale(${(scaleValue)/100})`;
+  }
+}
+
+function changePictureScale ({ target }) {
+  const value = parseInt(scaleControlValue.value, 10);
+  if (target === smallScaleControl) {
+    zoomOut(value);
+  } else if (target === bigScaleControl) {
+    zoomIn(value);
+  }
+}
 
 function checkUniqueHashtags (hashtags) {
   const uniqueValue = [];
@@ -73,7 +107,11 @@ function closeEditPictureForm () {
   hashtagsInput.removeEventListener('keydown', onInputFocused);
   commentInput.removeEventListener('change',checkComment);
   commentInput.removeEventListener('keydown', onInputFocused);
-
+  smallScaleControl.removeEventListener('click', changePictureScale);
+  bigScaleControl.removeEventListener('click', changePictureScale);
+  effectPictureControl.removeEventListener('click', addEffectOfPicture);
+  removeEffectOfPicture();
+  slider.noUiSlider.destroy();
 }
 
 function onEscBtnPress (e) {
@@ -92,6 +130,11 @@ function showEditPictureForm () {
   commentInput.addEventListener('change', checkComment);
   commentInput.addEventListener('keydown', onInputFocused);
   document.addEventListener('keydown', onEscBtnPress);
+  scaleControlValue.value = '100%';
+  smallScaleControl.addEventListener('click', changePictureScale);
+  bigScaleControl.addEventListener('click', changePictureScale);
+  effectPictureControl.addEventListener('click', addEffectOfPicture);
+  createSlider();
 }
 
 uploadPictureInput.addEventListener('change', () => {
