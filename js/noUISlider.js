@@ -1,9 +1,13 @@
+import {FILTERS} from './data.js';
+
+const sliderBar = document.querySelector('.effect-level');
 const slider = document.querySelector('.effect-level__slider');
 const effectValueInput = document.querySelector('.effect-level__value');
 const picturePreview = document.querySelector('.img-upload__preview img');
+const {CHROME, SEPIA, MARVIN, PHOBOS, HEAT} = FILTERS;
 
 const SLIDER_OPTIONS = {
-  'chrome': {
+  [CHROME]: {
     range: {
       min: 0,
       max: 1,
@@ -11,7 +15,7 @@ const SLIDER_OPTIONS = {
     step: 0.1,
     start: 1,
   },
-  'sepia': {
+  [SEPIA]: {
     range: {
       min: 0,
       max: 1,
@@ -19,7 +23,7 @@ const SLIDER_OPTIONS = {
     step: 0.1,
     start: 1,
   },
-  'marvin': {
+  [MARVIN]: {
     range: {
       min: 0,
       max: 100,
@@ -27,7 +31,7 @@ const SLIDER_OPTIONS = {
     step: 1,
     start: 100,
   },
-  'phobos': {
+  [PHOBOS]: {
     range: {
       min: 0,
       max: 3,
@@ -35,7 +39,7 @@ const SLIDER_OPTIONS = {
     step: 0.1,
     start: 3,
   },
-  'heat': {
+  [HEAT]: {
     range: {
       min: 1,
       max: 3,
@@ -79,19 +83,19 @@ function removeEffectOfPicture () {
 
 function addPictureFilterStyle (effect, value) {
   switch (effect) {
-    case 'chrome':
+    case CHROME:
       picturePreview.style.filter = `grayscale(${value})`;
       break;
-    case 'sepia':
+    case SEPIA:
       picturePreview.style.filter = `sepia(${value})`;
       break;
-    case 'marvin':
+    case MARVIN:
       picturePreview.style.filter = `invert(${value}%)`;
       break;
-    case 'phobos':
+    case PHOBOS:
       picturePreview.style.filter = `blur(${value}px)`;
       break;
-    case 'heat':
+    case HEAT:
       picturePreview.style.filter = `brightness(${value})`;
       break;
     default:
@@ -111,11 +115,13 @@ function changeSliderOptions (effectName) {
     });
   } else {
     removeEffectOfPicture();
+    sliderBar.style.display = 'none';
   }
 }
 
 function addEffectOfPicture ({ target: { value, type } }) {
   if(type === 'radio') {
+    sliderBar.style.display = 'block';
     picturePreview.className = `effects__preview--${value}`;
     changeSliderOptions(value);
   }

@@ -30,7 +30,14 @@ const LIKES_MIN = 15;
 const LIKES_MAX = 200;
 const COMMENTS_MIN = 0;
 const COMMENTS_MAX = 15;
+const FILTERS = {
+  CHROME: 'chrome',
+  SEPIA: 'sepia',
+  MARVIN: 'marvin',
+  PHOBOS: 'phobos',
+  HEAT: 'heat',
+};
 
 const posts = createObjectsArray(PHOTOS_QUANTITY);
 
-export {NAMES, COMMENTS, PHOTOS_QUANTITY, AVATARS_QUANTITY, LIKES_MIN, LIKES_MAX, COMMENTS_MIN, COMMENTS_MAX, posts};
+export {NAMES, COMMENTS, PHOTOS_QUANTITY, AVATARS_QUANTITY, LIKES_MIN, LIKES_MAX, COMMENTS_MIN, COMMENTS_MAX, FILTERS, posts};

@@ -16,6 +16,7 @@ const bigScaleControl = editPictureForm.querySelector('.scale__control--bigger')
 const scaleControlValue = editPictureForm.querySelector('.scale__control--value');
 const picturePreview = editPictureForm.querySelector('.img-upload__preview img');
 const effectPictureControl = document.querySelector('.effects__list');
+const sliderBar = document.querySelector('.effect-level');
 
 const ERROR_MESSAGES = {
   HASHTAG_SUM: 'Нельзя указать больше 5 (пяти) хэштегов',
@@ -42,10 +43,13 @@ function zoomOut (value) {
 
 function changePictureScale ({ target }) {
   const value = parseInt(scaleControlValue.value, 10);
+
   if (target === smallScaleControl) {
-    zoomOut(value);
-  } else if (target === bigScaleControl) {
-    zoomIn(value);
+    return zoomOut(value);
+  }
+
+  if (target === bigScaleControl) {
+    return zoomIn(value);
   }
 }
 
@@ -124,6 +128,7 @@ function onEscBtnPress (e) {
 function showEditPictureForm () {
   editPictureForm.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  sliderBar.style.display = 'none';
   editPictureCancelButton.addEventListener('click', closeEditPictureForm);
   hashtagsInput.addEventListener('change', getHashtags);
   hashtagsInput.addEventListener('keydown', onInputFocused);
