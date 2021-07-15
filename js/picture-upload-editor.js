@@ -1,5 +1,6 @@
-import {checkStringLength} from './utils/utils.js';
+import {checkStringLength, showSuccess, showErrorModal} from './utils.js';
 import {createSlider, addEffectOfPicture, removeEffectOfPicture, slider} from './noUISlider.js';
+import {sendData} from './api.js';
 
 const COMMENT_LENGTH_MAX = 140;
 const SCALE_VALUE_MIN = 25;
@@ -7,15 +8,17 @@ const SCALE_VALUE_MAX = 100;
 const SCALE_VALUE_CHANGE = 25;
 
 const uploadPictureInput = document.querySelector('#upload-file');
-const editPictureForm = document.querySelector('.img-upload__overlay');
-const editPictureCancelButton = editPictureForm.querySelector('#upload-cancel');
-const hashtagsInput = editPictureForm.querySelector('.text__hashtags');
-const commentInput = editPictureForm.querySelector('.text__description');
-const smallScaleControl = editPictureForm.querySelector('.scale__control--smaller');
-const bigScaleControl = editPictureForm.querySelector('.scale__control--bigger');
-const scaleControlValue = editPictureForm.querySelector('.scale__control--value');
-const picturePreview = editPictureForm.querySelector('.img-upload__preview img');
+const editPictureModal = document.querySelector('.img-upload__overlay');
+const editPictureCancelButton = editPictureModal.querySelector('#upload-cancel');
+const hashtagsInput = editPictureModal.querySelector('.text__hashtags');
+const commentInput = editPictureModal.querySelector('.text__description');
+const smallScaleControl = editPictureModal.querySelector('.scale__control--smaller');
+const bigScaleControl = editPictureModal.querySelector('.scale__control--bigger');
+const scaleControlValue = editPictureModal.querySelector('.scale__control--value');
+const picturePreview = editPictureModal.querySelector('.img-upload__preview img');
 const effectPictureControl = document.querySelector('.effects__list');
+const sliderBar = document.querySelector('.effect-level');
+const editPictureForm = document.querySelector('.img-upload__form');
 
 const ERROR_MESSAGES = {
   HASHTAG_SUM: 'Нельзя указать больше 5 (пяти) хэштегов',
@@ -42,10 +45,13 @@ function zoomOut (value) {
 
 function changePictureScale ({ target }) {
   const value = parseInt(scaleControlValue.value, 10);
+
   if (target === smallScaleControl) {
-    zoomOut(value);
-  } else if (target === bigScaleControl) {
-    zoomIn(value);
+    return zoomOut(value);
+  }
+
+  if (target === bigScaleControl) {
+    return zoomIn(value);
   }
 }
 
@@ -100,7 +106,7 @@ function checkComment (e) {
 
 function closeEditPictureForm () {
   uploadPictureInput.value = '';
-  editPictureForm.classList.add('hidden');
+  editPictureModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
   editPictureCancelButton.removeEventListener('click', closeEditPictureForm);
   hashtagsInput.removeEventListener('change', getHashtags);
@@ -121,9 +127,26 @@ function onEscBtnPress (e) {
   }
 }
 
+function setFormSubmit (e) {
+  e.preventDefault();
+  document.removeEventListener('keydown', onEscBtnPress);
+  sendData(
+    () => {
+      closeEditPictureForm();
+      showSuccess();
+    },
+    () => {
+      closeEditPictureForm();
+      showErrorModal();
+    },
+    new FormData(e.target),
+  );
+}
+
 function showEditPictureForm () {
-  editPictureForm.classList.remove('hidden');
+  editPictureModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  sliderBar.style.display = 'none';
   editPictureCancelButton.addEventListener('click', closeEditPictureForm);
   hashtagsInput.addEventListener('change', getHashtags);
   hashtagsInput.addEventListener('keydown', onInputFocused);
@@ -135,6 +158,7 @@ function showEditPictureForm () {
   bigScaleControl.addEventListener('click', changePictureScale);
   effectPictureControl.addEventListener('click', addEffectOfPicture);
   createSlider();
+  editPictureForm.addEventListener('submit', setFormSubmit);
 }
 
 uploadPictureInput.addEventListener('change', () => {
