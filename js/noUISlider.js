@@ -1,4 +1,10 @@
-import {FILTERS} from './data.js';
+const FILTERS = {
+  CHROME: 'chrome',
+  SEPIA: 'sepia',
+  MARVIN: 'marvin',
+  PHOBOS: 'phobos',
+  HEAT: 'heat',
+};
 
 const sliderBar = document.querySelector('.effect-level');
 const slider = document.querySelector('.effect-level__slider');
