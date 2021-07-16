@@ -85,4 +85,8 @@ function showSuccess () {
   document.addEventListener('keydown', onEscBtnForSuccessModal);
 }
 
-export {getRandomInt, checkStringLength, showPopup, hidePopup, showAlert, showSuccess, showErrorModal};
+function formReset (form) {
+  form.reset();
+}
+
+export {getRandomInt, checkStringLength, showPopup, hidePopup, showAlert, showSuccess, showErrorModal, formReset};

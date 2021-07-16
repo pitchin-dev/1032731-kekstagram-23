@@ -1,4 +1,4 @@
-import {showAlert} from './utils.js';
+import {showAlert} from './utils/utils.js';
 
 const GET_DATA_URL = 'https://23.javascript.pages.academy/kekstagram/data';
 const SEND_DATA_URL = 'https://23.javascript.pages.academy/kekstagram';

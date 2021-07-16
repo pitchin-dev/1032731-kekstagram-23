@@ -1,4 +1,4 @@
-import {checkStringLength, showSuccess, showErrorModal} from './utils.js';
+import {checkStringLength, showSuccess, showErrorModal, formReset} from './utils/utils.js';
 import {createSlider, addEffectOfPicture, removeEffectOfPicture, slider} from './noUISlider.js';
 import {sendData} from './api.js';
 
@@ -141,6 +141,7 @@ function setFormSubmit (e) {
     },
     new FormData(e.target),
   );
+  formReset(editPictureForm);
 }
 
 function showEditPictureForm () {
