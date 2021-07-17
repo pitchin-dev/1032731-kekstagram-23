@@ -1,19 +1,18 @@
-const FILTERS = {
-  CHROME: 'chrome',
-  SEPIA: 'sepia',
-  MARVIN: 'marvin',
-  PHOBOS: 'phobos',
-  HEAT: 'heat',
+const filters = {
+  chrome: 'chrome',
+  sepia: 'sepia',
+  marvin: 'marvin',
+  phobos: 'phobos',
+  heat: 'heat',
 };
-
 const sliderBar = document.querySelector('.effect-level');
 const slider = document.querySelector('.effect-level__slider');
 const effectValueInput = document.querySelector('.effect-level__value');
 const picturePreview = document.querySelector('.img-upload__preview img');
-const {CHROME, SEPIA, MARVIN, PHOBOS, HEAT} = FILTERS;
+const {chrome, sepia, marvin, phobos, heat} = filters;
 
 const SLIDER_OPTIONS = {
-  [CHROME]: {
+  [chrome]: {
     range: {
       min: 0,
       max: 1,
@@ -21,7 +20,7 @@ const SLIDER_OPTIONS = {
     step: 0.1,
     start: 1,
   },
-  [SEPIA]: {
+  [sepia]: {
     range: {
       min: 0,
       max: 1,
@@ -29,7 +28,7 @@ const SLIDER_OPTIONS = {
     step: 0.1,
     start: 1,
   },
-  [MARVIN]: {
+  [marvin]: {
     range: {
       min: 0,
       max: 100,
@@ -37,7 +36,7 @@ const SLIDER_OPTIONS = {
     step: 1,
     start: 100,
   },
-  [PHOBOS]: {
+  [phobos]: {
     range: {
       min: 0,
       max: 3,
@@ -45,7 +44,7 @@ const SLIDER_OPTIONS = {
     step: 0.1,
     start: 3,
   },
-  [HEAT]: {
+  [heat]: {
     range: {
       min: 1,
       max: 3,
@@ -89,19 +88,19 @@ function removeEffectOfPicture () {
 
 function addPictureFilterStyle (effect, value) {
   switch (effect) {
-    case CHROME:
+    case chrome:
       picturePreview.style.filter = `grayscale(${value})`;
       break;
-    case SEPIA:
+    case sepia:
       picturePreview.style.filter = `sepia(${value})`;
       break;
-    case MARVIN:
+    case marvin:
       picturePreview.style.filter = `invert(${value}%)`;
       break;
-    case PHOBOS:
+    case phobos:
       picturePreview.style.filter = `blur(${value}px)`;
       break;
-    case HEAT:
+    case heat:
       picturePreview.style.filter = `brightness(${value})`;
       break;
     default:
