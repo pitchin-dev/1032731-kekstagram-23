@@ -2,7 +2,6 @@ import {showFullPhoto} from './create-photo-full.js';
 import {debounce} from './utils/debounce.js';
 import {shuffle} from './utils/utils.js';
 
-const RERENDER_DELAY = 500;
 const RANDOM_PICTURES_NUMBER = 10;
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -36,7 +35,6 @@ const setFilterDebounced = (debounce(
     });
     renderPostsList(photoList);
   },
-  RERENDER_DELAY,
 ));
 
 picturesContainer.addEventListener('click', (e) => {
