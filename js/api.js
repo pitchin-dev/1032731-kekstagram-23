@@ -1,21 +1,19 @@
-import {showAlert} from './utils.js';
-
 const GET_DATA_URL = 'https://23.javascript.pages.academy/kekstagram/data';
 const SEND_DATA_URL = 'https://23.javascript.pages.academy/kekstagram';
 
-function getData (onSuccess) {
+function getData (onSuccess, onError) {
   fetch(GET_DATA_URL)
     .then((res) => {
       if (!res.ok) {
-        return showAlert('Не удалось загрузить данные.');
+        return onError();
       }
       return res.json();
     })
     .then(onSuccess)
-    .catch(() => showAlert('Не удалось загрузить данные.'));
+    .catch(() => onError());
 }
 
-function sendData (onSuccess, onFail, body) {
+function sendData (onSuccess, onError, body) {
   fetch(
     SEND_DATA_URL,
     {
@@ -25,11 +23,11 @@ function sendData (onSuccess, onFail, body) {
   )
     .then((res) => {
       if (!res.ok) {
-        return onFail();
+        return onError();
       }
       return onSuccess();
     })
-    .catch(() => onFail());
+    .catch(() => onError());
 }
 
 export {getData, sendData};

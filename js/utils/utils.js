@@ -85,4 +85,16 @@ function showSuccess () {
   document.addEventListener('keydown', onEscBtnForSuccessModal);
 }
 
-export {getRandomInt, checkStringLength, showPopup, hidePopup, showAlert, showSuccess, showErrorModal};
+function formReset (form) {
+  form.reset();
+}
+
+//https://learn.javascript.ru/task/shuffle
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+export {getRandomInt, checkStringLength, showPopup, hidePopup, showAlert, showSuccess, showErrorModal, formReset, shuffle};

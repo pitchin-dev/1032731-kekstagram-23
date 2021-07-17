@@ -1,4 +1,4 @@
-import {checkStringLength, showSuccess, showErrorModal} from './utils.js';
+import {checkStringLength, showSuccess, showErrorModal, formReset} from './utils/utils.js';
 import {createSlider, addEffectOfPicture, removeEffectOfPicture, slider} from './noUISlider.js';
 import {sendData} from './api.js';
 
@@ -141,19 +141,20 @@ function setFormSubmit (e) {
     },
     new FormData(e.target),
   );
+  formReset(editPictureForm);
 }
 
 function showEditPictureForm () {
   editPictureModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   sliderBar.style.display = 'none';
+  picturePreview.style.removeProperty('transform');
   editPictureCancelButton.addEventListener('click', closeEditPictureForm);
   hashtagsInput.addEventListener('change', getHashtags);
   hashtagsInput.addEventListener('keydown', onInputFocused);
   commentInput.addEventListener('change', checkComment);
   commentInput.addEventListener('keydown', onInputFocused);
   document.addEventListener('keydown', onEscBtnPress);
-  scaleControlValue.value = '100%';
   smallScaleControl.addEventListener('click', changePictureScale);
   bigScaleControl.addEventListener('click', changePictureScale);
   effectPictureControl.addEventListener('click', addEffectOfPicture);

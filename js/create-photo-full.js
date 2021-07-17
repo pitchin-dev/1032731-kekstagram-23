@@ -1,4 +1,4 @@
-import {showPopup, hidePopup} from './utils.js';
+import {showPopup, hidePopup} from './utils/utils.js';
 
 const BLOCK_SIZE = 5;
 const bigPicture = document.querySelector('.big-picture');
