@@ -3,7 +3,7 @@ import {debounce} from './utils/debounce.js';
 import {shuffle} from './utils/utils.js';
 
 const RERENDER_DELAY = 500;
-const NUMBER_RANDOM_PICTURES = 10;
+const RANDOM_PICTURES_NUMBER = 10;
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const postListFragment = document.createDocumentFragment();
@@ -65,7 +65,7 @@ function renderPhotoFilter (userPhotos) {
   randomPicturesBtn.addEventListener('click', () => {
     setFiltersActive(randomPicturesBtn);
     shuffle(userPhotos);
-    const randomPictures = userPhotos.slice(0, NUMBER_RANDOM_PICTURES);
+    const randomPictures = userPhotos.slice(0, RANDOM_PICTURES_NUMBER);
     setFilterDebounced(randomPictures);
   });
 
