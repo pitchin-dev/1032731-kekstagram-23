@@ -40,6 +40,24 @@ const createComment = (comment) => {
   return commentElement;
 };
 
+const onCommentsLoad = (element, counter, fragment, array) => {
+  element.addEventListener('click', () => {
+    if (counter < array.comments.length) {
+      array.comments.slice(counter, counter + BLOCK_SIZE).forEach((comment) => {
+        fragment.appendChild(createComment(comment));
+      });
+
+      commentsBlock.appendChild(fragment);
+      socialCommentCount.innerHTML = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
+      counter += BLOCK_SIZE;
+    }
+
+    if (commentsBlock.children.length === array.comments.length) {
+      commentsLoader.classList.add('hidden');
+    }
+  });
+};
+
 const showFullPhoto = (photo) => {
   const commentsBlockFragment = document.createDocumentFragment();
   showPopup(bigPicture, 'modal-open', 'hidden');
@@ -70,21 +88,7 @@ const showFullPhoto = (photo) => {
   }
   commentCounter += BLOCK_SIZE;
 
-  commentsLoader.addEventListener('click', () => {
-    if (commentCounter < photo.comments.length) {
-      photo.comments.slice(commentCounter, commentCounter + BLOCK_SIZE).forEach((comment) => {
-        commentsBlockFragment.appendChild(createComment(comment));
-      });
-
-      commentsBlock.appendChild(commentsBlockFragment);
-      socialCommentCount.innerHTML = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
-      commentCounter += BLOCK_SIZE;
-    }
-
-    if (commentsBlock.children.length === photo.comments.length) {
-      commentsLoader.classList.add('hidden');
-    }
-  });
+  onCommentsLoad(commentsLoader, commentCounter, commentsBlockFragment, photo);
 
   closeBtn.addEventListener('click', onCloseBtnClick);
   document.addEventListener('keydown', onEscBtnPress);
