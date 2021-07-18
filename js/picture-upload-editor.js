@@ -86,7 +86,7 @@ const renderValidationMessages = (hashtags) => {
   hashtagsInput.reportValidity();
 };
 
-const getHashtags = (e) => {
+const onHashtagsCheck = (e) => {
   const hashtags = e.target.value.split(' ');
   renderValidationMessages(hashtags);
 };
@@ -95,7 +95,7 @@ const onInputFocused = (e) => {
   e.stopPropagation();
 };
 
-const checkComment = (e) => {
+const onCommentCheck = (e) => {
   const {value} = e.target;
   if(!checkStringLength(value, COMMENT_LENGTH_MAX)) {
     commentInput.setCustomValidity(ERROR_MESSAGES.COMMENT_LENGTH);
@@ -109,14 +109,16 @@ const onEditPictureFormClose = () => {
   uploadPictureInput.value = '';
   editPictureModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
+
   editPictureCancelButton.removeEventListener('click', onEditPictureFormClose);
-  hashtagsInput.removeEventListener('change', getHashtags);
+  hashtagsInput.removeEventListener('change', onHashtagsCheck);
   hashtagsInput.removeEventListener('keydown', onInputFocused);
-  commentInput.removeEventListener('change',checkComment);
+  commentInput.removeEventListener('change',onCommentCheck);
   commentInput.removeEventListener('keydown', onInputFocused);
   smallScaleControl.removeEventListener('click', onPictureScaleChange);
   bigScaleControl.removeEventListener('click', onPictureScaleChange);
   effectPictureControl.removeEventListener('click', onPictureEffectAdded);
+
   removeEffectOfPicture();
   slider.noUiSlider.destroy();
 };
@@ -151,9 +153,9 @@ const showEditPictureForm = () => {
   sliderBar.style.display = 'none';
   picturePreview.style.removeProperty('transform');
   editPictureCancelButton.addEventListener('click', onEditPictureFormClose);
-  hashtagsInput.addEventListener('change', getHashtags);
+  hashtagsInput.addEventListener('change', onHashtagsCheck);
   hashtagsInput.addEventListener('keydown', onInputFocused);
-  commentInput.addEventListener('change', checkComment);
+  commentInput.addEventListener('change', onCommentCheck);
   commentInput.addEventListener('keydown', onInputFocused);
   document.addEventListener('keydown', onEscBtnPress);
   smallScaleControl.addEventListener('click', onPictureScaleChange);
