@@ -2,6 +2,7 @@ import {checkStringLength, showSuccess, showErrorModal, formReset} from './utils
 import {createSlider, onPictureEffectAdded, removeEffectOfPicture, slider} from './noUISlider.js';
 import {sendData} from './api.js';
 
+const REG_EXP = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const COMMENT_LENGTH_MAX = 140;
 const SCALE_VALUE_MIN = 25;
@@ -73,8 +74,7 @@ const checkUniqueHashtags = (hashtags) => {
 const isFit = (hashtags, template) => hashtags.every((element) => template.test(element));
 
 const renderValidationMessages = (hashtags) => {
-  const regExp = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
-  if (!isFit(hashtags, regExp)) {
+  if (!isFit(hashtags, REG_EXP)) {
     hashtagsInput.setCustomValidity(ERROR_MESSAGES.HASHTAG_TEMPLATE);
   } else if (!checkUniqueHashtags(hashtags)) {
     hashtagsInput.setCustomValidity(ERROR_MESSAGES.HASHTAG_REPEAT);
