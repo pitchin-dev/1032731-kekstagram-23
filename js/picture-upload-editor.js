@@ -1,5 +1,5 @@
 import {checkStringLength, showSuccess, showErrorModal, formReset} from './utils/utils.js';
-import {createSlider, addEffectOfPicture, removeEffectOfPicture, slider} from './noUISlider.js';
+import {createSlider, onPictureEffectAdded, removeEffectOfPicture, slider} from './noUISlider.js';
 import {sendData} from './api.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
@@ -44,7 +44,7 @@ function zoomOut (value) {
   }
 }
 
-function changePictureScale ({ target }) {
+function onPictureScaleChange ({ target }) {
   const value = parseInt(scaleControlValue.value, 10);
 
   if (target === smallScaleControl) {
@@ -105,25 +105,25 @@ function checkComment (e) {
   commentInput.reportValidity();
 }
 
-function closeEditPictureForm () {
+function onEditPictureFormClose () {
   uploadPictureInput.value = '';
   editPictureModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  editPictureCancelButton.removeEventListener('click', closeEditPictureForm);
+  editPictureCancelButton.removeEventListener('click', onEditPictureFormClose);
   hashtagsInput.removeEventListener('change', getHashtags);
   hashtagsInput.removeEventListener('keydown', onInputFocused);
   commentInput.removeEventListener('change',checkComment);
   commentInput.removeEventListener('keydown', onInputFocused);
-  smallScaleControl.removeEventListener('click', changePictureScale);
-  bigScaleControl.removeEventListener('click', changePictureScale);
-  effectPictureControl.removeEventListener('click', addEffectOfPicture);
+  smallScaleControl.removeEventListener('click', onPictureScaleChange);
+  bigScaleControl.removeEventListener('click', onPictureScaleChange);
+  effectPictureControl.removeEventListener('click', onPictureEffectAdded);
   removeEffectOfPicture();
   slider.noUiSlider.destroy();
 }
 
 function onEscBtnPress (e) {
   if (e.key === 'Escape') {
-    closeEditPictureForm();
+    onEditPictureFormClose();
     document.removeEventListener('keydown', onEscBtnPress);
   }
 }
@@ -133,11 +133,11 @@ function setFormSubmit (e) {
   document.removeEventListener('keydown', onEscBtnPress);
   sendData(
     () => {
-      closeEditPictureForm();
+      onEditPictureFormClose();
       showSuccess();
     },
     () => {
-      closeEditPictureForm();
+      onEditPictureFormClose();
       showErrorModal();
     },
     new FormData(e.target),
@@ -150,15 +150,15 @@ function showEditPictureForm () {
   document.body.classList.add('modal-open');
   sliderBar.style.display = 'none';
   picturePreview.style.removeProperty('transform');
-  editPictureCancelButton.addEventListener('click', closeEditPictureForm);
+  editPictureCancelButton.addEventListener('click', onEditPictureFormClose);
   hashtagsInput.addEventListener('change', getHashtags);
   hashtagsInput.addEventListener('keydown', onInputFocused);
   commentInput.addEventListener('change', checkComment);
   commentInput.addEventListener('keydown', onInputFocused);
   document.addEventListener('keydown', onEscBtnPress);
-  smallScaleControl.addEventListener('click', changePictureScale);
-  bigScaleControl.addEventListener('click', changePictureScale);
-  effectPictureControl.addEventListener('click', addEffectOfPicture);
+  smallScaleControl.addEventListener('click', onPictureScaleChange);
+  bigScaleControl.addEventListener('click', onPictureScaleChange);
+  effectPictureControl.addEventListener('click', onPictureEffectAdded);
   createSlider();
   editPictureForm.addEventListener('submit', setFormSubmit);
 }

@@ -124,7 +124,7 @@ function changeSliderOptions (effectName) {
   }
 }
 
-function addEffectOfPicture ({ target: { value, type } }) {
+function onPictureEffectAdded ({ target: { value, type } }) {
   if(type === 'radio') {
     sliderBar.style.display = 'block';
     picturePreview.className = `effects__preview--${value}`;
@@ -132,4 +132,4 @@ function addEffectOfPicture ({ target: { value, type } }) {
   }
 }
 
-export {createSlider, addEffectOfPicture, removeEffectOfPicture, slider};
+export {createSlider, onPictureEffectAdded, removeEffectOfPicture, slider};
