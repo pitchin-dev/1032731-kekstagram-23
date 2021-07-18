@@ -2,6 +2,7 @@ import {checkStringLength, showSuccess, showErrorModal, formReset} from './utils
 import {createSlider, addEffectOfPicture, removeEffectOfPicture, slider} from './noUISlider.js';
 import {sendData} from './api.js';
 
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const COMMENT_LENGTH_MAX = 140;
 const SCALE_VALUE_MIN = 25;
 const SCALE_VALUE_MAX = 100;
@@ -165,5 +166,20 @@ function showEditPictureForm () {
 uploadPictureInput.addEventListener('change', () => {
   if (uploadPictureInput.value) {
     showEditPictureForm(uploadPictureInput.value);
+  }
+});
+
+uploadPictureInput.addEventListener('change', () => {
+  const file = uploadPictureInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    const reader = new FileReader();
+
+    reader.addEventListener('load', () => {
+      picturePreview.src = reader.result;
+    });
+    reader.readAsDataURL(file);
   }
 });
