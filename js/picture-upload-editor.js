@@ -28,23 +28,23 @@ const ERROR_MESSAGES = {
   COMMENT_LENGTH: 'Длина комментария не должна быть больше, чем 140 (сто сорок) символов',
 };
 
-function zoomIn(value) {
+const zoomIn = (value) => {
   if (value < SCALE_VALUE_MAX) {
     const scaleValue = value + SCALE_VALUE_CHANGE;
     scaleControlValue.value = `${scaleValue}%`;
     picturePreview.style.transform = `scale(${(scaleValue)/100})`;
   }
-}
+};
 
-function zoomOut (value) {
+const zoomOut = (value) => {
   if (value > SCALE_VALUE_MIN) {
     const scaleValue = value - SCALE_VALUE_CHANGE;
     scaleControlValue.value = `${scaleValue}%`;
     picturePreview.style.transform = `scale(${(scaleValue)/100})`;
   }
-}
+};
 
-function onPictureScaleChange ({ target }) {
+const onPictureScaleChange = ({ target }) => {
   const value = parseInt(scaleControlValue.value, 10);
 
   if (target === smallScaleControl) {
@@ -54,9 +54,9 @@ function onPictureScaleChange ({ target }) {
   if (target === bigScaleControl) {
     return zoomIn(value);
   }
-}
+};
 
-function checkUniqueHashtags (hashtags) {
+const checkUniqueHashtags = (hashtags) => {
   const uniqueValue = [];
 
   for (let index = 0; index < hashtags.length; ++index) {
@@ -68,11 +68,11 @@ function checkUniqueHashtags (hashtags) {
   }
 
   return true;
-}
+};
 
 const isFit = (hashtags, template) => hashtags.every((element) => template.test(element));
 
-function renderValidationMessages (hashtags) {
+const renderValidationMessages = (hashtags) => {
   const regExp = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
   if (!isFit(hashtags, regExp)) {
     hashtagsInput.setCustomValidity(ERROR_MESSAGES.HASHTAG_TEMPLATE);
@@ -84,18 +84,18 @@ function renderValidationMessages (hashtags) {
     hashtagsInput.setCustomValidity('');
   }
   hashtagsInput.reportValidity();
-}
+};
 
-function getHashtags (e) {
+const getHashtags = (e) => {
   const hashtags = e.target.value.split(' ');
   renderValidationMessages(hashtags);
-}
+};
 
-function onInputFocused (e) {
+const onInputFocused = (e) => {
   e.stopPropagation();
-}
+};
 
-function checkComment (e) {
+const checkComment = (e) => {
   const {value} = e.target;
   if(!checkStringLength(value, COMMENT_LENGTH_MAX)) {
     commentInput.setCustomValidity(ERROR_MESSAGES.COMMENT_LENGTH);
@@ -103,9 +103,9 @@ function checkComment (e) {
     commentInput.setCustomValidity('');
   }
   commentInput.reportValidity();
-}
+};
 
-function onEditPictureFormClose () {
+const onEditPictureFormClose = () => {
   uploadPictureInput.value = '';
   editPictureModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -119,16 +119,16 @@ function onEditPictureFormClose () {
   effectPictureControl.removeEventListener('click', onPictureEffectAdded);
   removeEffectOfPicture();
   slider.noUiSlider.destroy();
-}
+};
 
-function onEscBtnPress (e) {
+const onEscBtnPress = (e) => {
   if (e.key === 'Escape') {
     onEditPictureFormClose();
     document.removeEventListener('keydown', onEscBtnPress);
   }
-}
+};
 
-function setFormSubmit (e) {
+const setFormSubmit = (e) => {
   e.preventDefault();
   document.removeEventListener('keydown', onEscBtnPress);
   sendData(
@@ -143,9 +143,9 @@ function setFormSubmit (e) {
     new FormData(e.target),
   );
   formReset(editPictureForm);
-}
+};
 
-function showEditPictureForm () {
+const showEditPictureForm = () => {
   editPictureModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   sliderBar.style.display = 'none';
@@ -161,7 +161,7 @@ function showEditPictureForm () {
   effectPictureControl.addEventListener('click', onPictureEffectAdded);
   createSlider();
   editPictureForm.addEventListener('submit', setFormSubmit);
-}
+};
 
 uploadPictureInput.addEventListener('change', () => {
   if (uploadPictureInput.value) {

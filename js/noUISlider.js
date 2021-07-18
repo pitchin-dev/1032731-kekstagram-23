@@ -54,7 +54,7 @@ const SLIDER_OPTIONS = {
   },
 };
 
-function createSlider () {
+const createSlider = () => {
   noUiSlider.create(slider, {
     range: {
       min: 0,
@@ -77,16 +77,16 @@ function createSlider () {
 
   effectValueInput.value = 100;
   slider.classList.add('hidden');
-}
+};
 
-function removeEffectOfPicture () {
+const removeEffectOfPicture = () => {
   picturePreview.removeAttribute('class');
   picturePreview.style.removeProperty('filter');
   effectValueInput.value = '';
   slider.classList.add('hidden');
-}
+};
 
-function addPictureFilterStyle (effect, value) {
+const addPictureFilterStyle = (effect, value) => {
   switch (effect) {
     case chrome:
       picturePreview.style.filter = `grayscale(${value})`;
@@ -107,9 +107,9 @@ function addPictureFilterStyle (effect, value) {
       picturePreview.style.filter = 'none';
       break;
   }
-}
+};
 
-function changeSliderOptions (effectName) {
+const changeSliderOptions = (effectName) => {
   if (effectName in SLIDER_OPTIONS) {
     slider.classList.remove('hidden');
     slider.noUiSlider.off('update');
@@ -122,14 +122,14 @@ function changeSliderOptions (effectName) {
     removeEffectOfPicture();
     sliderBar.style.display = 'none';
   }
-}
+};
 
-function onPictureEffectAdded ({ target: { value, type } }) {
+const onPictureEffectAdded = ({ target: { value, type } }) => {
   if(type === 'radio') {
     sliderBar.style.display = 'block';
     picturePreview.className = `effects__preview--${value}`;
     changeSliderOptions(value);
   }
-}
+};
 
 export {createSlider, onPictureEffectAdded, removeEffectOfPicture, slider};

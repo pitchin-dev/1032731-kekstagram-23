@@ -14,7 +14,7 @@ const randomPicturesBtn = imgFilters.querySelector('#filter-random');
 const discussedPicturesBtn = imgFilters.querySelector('#filter-discussed');
 let postListCopy = [];
 
-function renderPostsList (posts) {
+const renderPostsList = (posts) => {
   postListCopy = posts;
 
   postListCopy.forEach(({ url, likes, comments }) => {
@@ -27,7 +27,7 @@ function renderPostsList (posts) {
 
   picturesContainer.appendChild(postListFragment);
   imgFilters.classList.remove('img-filters--inactive');
-}
+};
 
 const setFilterDebounced = (debounce(
   (photoList) => {
@@ -48,14 +48,14 @@ picturesContainer.addEventListener('click', (e) => {
   }
 });
 
-function setFiltersActive (activeButton) {
+const setFiltersActive = (activeButton) => {
   imgFiltersBtn.forEach((imgFilterButton) => {
     imgFilterButton.classList.remove('img-filters__button--active');
   });
   activeButton.classList.add('img-filters__button--active');
-}
+};
 
-function renderPhotoFilter (userPhotos) {
+const renderPhotoFilter = (userPhotos) => {
   defaultPicturesBtn.addEventListener('click', () => {
     setFiltersActive(defaultPicturesBtn);
     const defaultPictures = userPhotos.sort((a, b) => a.id > b.id ? 1 : -1);
@@ -75,6 +75,6 @@ function renderPhotoFilter (userPhotos) {
     discussedPictures.reverse();
     setFilterDebounced(discussedPictures);
   });
-}
+};
 
 export {renderPostsList, renderPhotoFilter};
