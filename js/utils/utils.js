@@ -3,7 +3,7 @@ const ALERT_SHOW_TIME = 5000;
 const alertTemplate = document.querySelector('#error').content.querySelector('.error');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 
-function getRandomInt(min, max) {
+const getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
 
@@ -16,23 +16,21 @@ function getRandomInt(min, max) {
   }
 
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
-function checkStringLength(string, maxLength) {
-  return string.length <= maxLength;
-}
+const checkStringLength = (string, maxLength) => string.length <= maxLength;
 
-function showPopup(popup, showClass, hideClass) {
+const showPopup = (popup, showClass, hideClass) => {
   popup.classList.remove(hideClass);
   document.body.classList.add(showClass);
-}
+};
 
-function hidePopup(popup, showClass, hideClass) {
+const hidePopup = (popup, showClass, hideClass) => {
   popup.classList.add(hideClass);
   document.body.classList.remove(showClass);
-}
+};
 
-function showAlert (message) {
+const showAlert = (message) => {
   const alertElement = alertTemplate.cloneNode(true);
   const title = alertElement.querySelector('.error__title');
   title.style.lineHeight = '1em';
@@ -43,58 +41,58 @@ function showAlert (message) {
   setTimeout(() => {
     alertElement.remove();
   }, ALERT_SHOW_TIME);
-}
+};
 
-function onSuccessModalClose () {
+const onSuccessModalClose = () => {
   const successModal = document.querySelector('.success');
   successModal.remove();
-}
+};
 
-function closeErrorModal () {
+const closeErrorModal = () => {
   const errorModal = document.querySelector('.error');
   errorModal.remove();
-}
+};
 
-function onEscBtnForErrorModal (e) {
+const onEscBtnForErrorModal = (e) => {
   if (e.key === 'Escape') {
     document.removeEventListener('keydown', onEscBtnForErrorModal);
     closeErrorModal();
   }
-}
+};
 
-function onEscBtnForSuccessModal (e) {
+const onEscBtnForSuccessModal = (e) => {
   if (e.key === 'Escape') {
     document.removeEventListener('keydown', onEscBtnForSuccessModal);
     onSuccessModalClose();
   }
-}
+};
 
-function showErrorModal () {
+const showErrorModal = () => {
   const errorModalElement = alertTemplate.cloneNode(true);
   const closeButton = errorModalElement.querySelector('.error__button');
   document.body.appendChild(errorModalElement);
   closeButton.addEventListener('click', closeErrorModal);
   document.addEventListener('keydown', onEscBtnForErrorModal);
-}
+};
 
-function showSuccess () {
+const showSuccess = () => {
   const successElement = successTemplate.cloneNode(true);
   const closeButton = successElement.querySelector('.success__button');
   document.body.appendChild(successElement);
   closeButton.addEventListener('click', onSuccessModalClose);
   document.addEventListener('keydown', onEscBtnForSuccessModal);
-}
+};
 
-function formReset (form) {
+const formReset = (form) => {
   form.reset();
-}
+};
 
 //https://learn.javascript.ru/task/shuffle
-function shuffle(array) {
+const shuffle = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
-}
+};
 
 export {getRandomInt, checkStringLength, showPopup, hidePopup, showAlert, showSuccess, showErrorModal, formReset, shuffle};

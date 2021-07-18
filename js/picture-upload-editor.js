@@ -1,7 +1,9 @@
 import {checkStringLength, showSuccess, showErrorModal, formReset} from './utils/utils.js';
-import {createSlider, addEffectOfPicture, removeEffectOfPicture, slider} from './noUISlider.js';
+import {createSlider, onPictureEffectAdded, removeEffectOfPicture, slider} from './noUISlider.js';
 import {sendData} from './api.js';
 
+const REG_EXP = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const COMMENT_LENGTH_MAX = 140;
 const SCALE_VALUE_MIN = 25;
 const SCALE_VALUE_MAX = 100;
@@ -27,23 +29,23 @@ const ERROR_MESSAGES = {
   COMMENT_LENGTH: 'Длина комментария не должна быть больше, чем 140 (сто сорок) символов',
 };
 
-function zoomIn(value) {
+const zoomIn = (value) => {
   if (value < SCALE_VALUE_MAX) {
     const scaleValue = value + SCALE_VALUE_CHANGE;
     scaleControlValue.value = `${scaleValue}%`;
     picturePreview.style.transform = `scale(${(scaleValue)/100})`;
   }
-}
+};
 
-function zoomOut (value) {
+const zoomOut = (value) => {
   if (value > SCALE_VALUE_MIN) {
     const scaleValue = value - SCALE_VALUE_CHANGE;
     scaleControlValue.value = `${scaleValue}%`;
     picturePreview.style.transform = `scale(${(scaleValue)/100})`;
   }
-}
+};
 
-function changePictureScale ({ target }) {
+const onPictureScaleChange = ({ target }) => {
   const value = parseInt(scaleControlValue.value, 10);
 
   if (target === smallScaleControl) {
@@ -53,9 +55,9 @@ function changePictureScale ({ target }) {
   if (target === bigScaleControl) {
     return zoomIn(value);
   }
-}
+};
 
-function checkUniqueHashtags (hashtags) {
+const checkUniqueHashtags = (hashtags) => {
   const uniqueValue = [];
 
   for (let index = 0; index < hashtags.length; ++index) {
@@ -67,13 +69,12 @@ function checkUniqueHashtags (hashtags) {
   }
 
   return true;
-}
+};
 
 const isFit = (hashtags, template) => hashtags.every((element) => template.test(element));
 
-function renderValidationMessages (hashtags) {
-  const regExp = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
-  if (!isFit(hashtags, regExp)) {
+const renderValidationMessages = (hashtags) => {
+  if (!isFit(hashtags, REG_EXP)) {
     hashtagsInput.setCustomValidity(ERROR_MESSAGES.HASHTAG_TEMPLATE);
   } else if (!checkUniqueHashtags(hashtags)) {
     hashtagsInput.setCustomValidity(ERROR_MESSAGES.HASHTAG_REPEAT);
@@ -83,18 +84,14 @@ function renderValidationMessages (hashtags) {
     hashtagsInput.setCustomValidity('');
   }
   hashtagsInput.reportValidity();
-}
+};
 
-function getHashtags (e) {
+const onHashtagsCheck = (e) => {
   const hashtags = e.target.value.split(' ');
   renderValidationMessages(hashtags);
-}
+};
 
-function onInputFocused (e) {
-  e.stopPropagation();
-}
-
-function checkComment (e) {
+const onCommentCheck = (e) => {
   const {value} = e.target;
   if(!checkStringLength(value, COMMENT_LENGTH_MAX)) {
     commentInput.setCustomValidity(ERROR_MESSAGES.COMMENT_LENGTH);
@@ -102,68 +99,85 @@ function checkComment (e) {
     commentInput.setCustomValidity('');
   }
   commentInput.reportValidity();
-}
+};
 
-function closeEditPictureForm () {
-  uploadPictureInput.value = '';
-  editPictureModal.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  editPictureCancelButton.removeEventListener('click', closeEditPictureForm);
-  hashtagsInput.removeEventListener('change', getHashtags);
-  hashtagsInput.removeEventListener('keydown', onInputFocused);
-  commentInput.removeEventListener('change',checkComment);
-  commentInput.removeEventListener('keydown', onInputFocused);
-  smallScaleControl.removeEventListener('click', changePictureScale);
-  bigScaleControl.removeEventListener('click', changePictureScale);
-  effectPictureControl.removeEventListener('click', addEffectOfPicture);
-  removeEffectOfPicture();
-  slider.noUiSlider.destroy();
-}
+const onEditPictureFormClose = (e) => {
+  if (hashtagsInput === document.activeElement || commentInput === document.activeElement) {
+    e.stopPropagation();
+  } else {
+    uploadPictureInput.value = '';
+    editPictureModal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
 
-function onEscBtnPress (e) {
+    editPictureCancelButton.removeEventListener('click', onEditPictureFormClose);
+    hashtagsInput.removeEventListener('change', onHashtagsCheck);
+    commentInput.removeEventListener('change',onCommentCheck);
+    smallScaleControl.removeEventListener('click', onPictureScaleChange);
+    bigScaleControl.removeEventListener('click', onPictureScaleChange);
+    effectPictureControl.removeEventListener('click', onPictureEffectAdded);
+
+    removeEffectOfPicture();
+    slider.noUiSlider.destroy();
+  }
+};
+
+const onEscBtnPress = (e) => {
   if (e.key === 'Escape') {
-    closeEditPictureForm();
+    onEditPictureFormClose();
     document.removeEventListener('keydown', onEscBtnPress);
   }
-}
+};
 
-function setFormSubmit (e) {
+const setFormSubmit = (e) => {
   e.preventDefault();
   document.removeEventListener('keydown', onEscBtnPress);
   sendData(
     () => {
-      closeEditPictureForm();
+      onEditPictureFormClose();
       showSuccess();
     },
     () => {
-      closeEditPictureForm();
+      onEditPictureFormClose();
       showErrorModal();
     },
     new FormData(e.target),
   );
   formReset(editPictureForm);
-}
+};
 
-function showEditPictureForm () {
+const showEditPictureForm = () => {
   editPictureModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   sliderBar.style.display = 'none';
   picturePreview.style.removeProperty('transform');
-  editPictureCancelButton.addEventListener('click', closeEditPictureForm);
-  hashtagsInput.addEventListener('change', getHashtags);
-  hashtagsInput.addEventListener('keydown', onInputFocused);
-  commentInput.addEventListener('change', checkComment);
-  commentInput.addEventListener('keydown', onInputFocused);
+  editPictureCancelButton.addEventListener('click', onEditPictureFormClose);
+  hashtagsInput.addEventListener('change', onHashtagsCheck);
+  commentInput.addEventListener('change', onCommentCheck);
   document.addEventListener('keydown', onEscBtnPress);
-  smallScaleControl.addEventListener('click', changePictureScale);
-  bigScaleControl.addEventListener('click', changePictureScale);
-  effectPictureControl.addEventListener('click', addEffectOfPicture);
+  smallScaleControl.addEventListener('click', onPictureScaleChange);
+  bigScaleControl.addEventListener('click', onPictureScaleChange);
+  effectPictureControl.addEventListener('click', onPictureEffectAdded);
   createSlider();
   editPictureForm.addEventListener('submit', setFormSubmit);
-}
+};
 
 uploadPictureInput.addEventListener('change', () => {
   if (uploadPictureInput.value) {
     showEditPictureForm(uploadPictureInput.value);
+  }
+});
+
+uploadPictureInput.addEventListener('change', () => {
+  const file = uploadPictureInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    const reader = new FileReader();
+
+    reader.addEventListener('load', () => {
+      picturePreview.src = reader.result;
+    });
+    reader.readAsDataURL(file);
   }
 });

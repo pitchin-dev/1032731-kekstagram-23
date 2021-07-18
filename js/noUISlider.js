@@ -1,3 +1,5 @@
+const EFFECT_INPUT_VALUE = 100;
+
 const filters = {
   chrome: 'chrome',
   sepia: 'sepia',
@@ -11,7 +13,7 @@ const effectValueInput = document.querySelector('.effect-level__value');
 const picturePreview = document.querySelector('.img-upload__preview img');
 const {chrome, sepia, marvin, phobos, heat} = filters;
 
-const SLIDER_OPTIONS = {
+const sliderOptions = {
   [chrome]: {
     range: {
       min: 0,
@@ -54,7 +56,7 @@ const SLIDER_OPTIONS = {
   },
 };
 
-function createSlider () {
+const createSlider = () => {
   noUiSlider.create(slider, {
     range: {
       min: 0,
@@ -75,18 +77,18 @@ function createSlider () {
     },
   });
 
-  effectValueInput.value = 100;
+  effectValueInput.value = EFFECT_INPUT_VALUE;
   slider.classList.add('hidden');
-}
+};
 
-function removeEffectOfPicture () {
+const removeEffectOfPicture = () => {
   picturePreview.removeAttribute('class');
   picturePreview.style.removeProperty('filter');
   effectValueInput.value = '';
   slider.classList.add('hidden');
-}
+};
 
-function addPictureFilterStyle (effect, value) {
+const addPictureFilterStyle = (effect, value) => {
   switch (effect) {
     case chrome:
       picturePreview.style.filter = `grayscale(${value})`;
@@ -107,13 +109,13 @@ function addPictureFilterStyle (effect, value) {
       picturePreview.style.filter = 'none';
       break;
   }
-}
+};
 
-function changeSliderOptions (effectName) {
-  if (effectName in SLIDER_OPTIONS) {
+const changeSliderOptions = (effectName) => {
+  if (effectName in sliderOptions) {
     slider.classList.remove('hidden');
     slider.noUiSlider.off('update');
-    slider.noUiSlider.updateOptions(SLIDER_OPTIONS[effectName]);
+    slider.noUiSlider.updateOptions(sliderOptions[effectName]);
     slider.noUiSlider.on('update', (values, handle) => {
       effectValueInput.value = `${values[handle]}`;
       addPictureFilterStyle(effectName, values[handle]);
@@ -122,14 +124,14 @@ function changeSliderOptions (effectName) {
     removeEffectOfPicture();
     sliderBar.style.display = 'none';
   }
-}
+};
 
-function addEffectOfPicture ({ target: { value, type } }) {
+const onPictureEffectAdded = ({ target: { value, type } }) => {
   if(type === 'radio') {
     sliderBar.style.display = 'block';
     picturePreview.className = `effects__preview--${value}`;
     changeSliderOptions(value);
   }
-}
+};
 
-export {createSlider, addEffectOfPicture, removeEffectOfPicture, slider};
+export {createSlider, onPictureEffectAdded, removeEffectOfPicture, slider};
