@@ -91,10 +91,6 @@ const onHashtagsCheck = (e) => {
   renderValidationMessages(hashtags);
 };
 
-const onInputFocused = (e) => {
-  e.stopPropagation();
-};
-
 const onCommentCheck = (e) => {
   const {value} = e.target;
   if(!checkStringLength(value, COMMENT_LENGTH_MAX)) {
@@ -115,9 +111,7 @@ const onEditPictureFormClose = (e) => {
 
     editPictureCancelButton.removeEventListener('click', onEditPictureFormClose);
     hashtagsInput.removeEventListener('change', onHashtagsCheck);
-    hashtagsInput.removeEventListener('keydown', onInputFocused);
     commentInput.removeEventListener('change',onCommentCheck);
-    commentInput.removeEventListener('keydown', onInputFocused);
     smallScaleControl.removeEventListener('click', onPictureScaleChange);
     bigScaleControl.removeEventListener('click', onPictureScaleChange);
     effectPictureControl.removeEventListener('click', onPictureEffectAdded);
