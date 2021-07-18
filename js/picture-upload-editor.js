@@ -158,9 +158,7 @@ const showEditPictureForm = () => {
   picturePreview.style.removeProperty('transform');
   editPictureCancelButton.addEventListener('click', onEditPictureFormClose);
   hashtagsInput.addEventListener('change', onHashtagsCheck);
-  hashtagsInput.addEventListener('keydown', onInputFocused);
   commentInput.addEventListener('change', onCommentCheck);
-  commentInput.addEventListener('keydown', onInputFocused);
   document.addEventListener('keydown', onEscBtnPress);
   smallScaleControl.addEventListener('click', onPictureScaleChange);
   bigScaleControl.addEventListener('click', onPictureScaleChange);
