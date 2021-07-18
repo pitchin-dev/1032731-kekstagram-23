@@ -105,22 +105,26 @@ const onCommentCheck = (e) => {
   commentInput.reportValidity();
 };
 
-const onEditPictureFormClose = () => {
-  uploadPictureInput.value = '';
-  editPictureModal.classList.add('hidden');
-  document.body.classList.remove('modal-open');
+const onEditPictureFormClose = (e) => {
+  if (hashtagsInput === document.activeElement || commentInput === document.activeElement) {
+    e.stopPropagation();
+  } else {
+    uploadPictureInput.value = '';
+    editPictureModal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
 
-  editPictureCancelButton.removeEventListener('click', onEditPictureFormClose);
-  hashtagsInput.removeEventListener('change', onHashtagsCheck);
-  hashtagsInput.removeEventListener('keydown', onInputFocused);
-  commentInput.removeEventListener('change',onCommentCheck);
-  commentInput.removeEventListener('keydown', onInputFocused);
-  smallScaleControl.removeEventListener('click', onPictureScaleChange);
-  bigScaleControl.removeEventListener('click', onPictureScaleChange);
-  effectPictureControl.removeEventListener('click', onPictureEffectAdded);
+    editPictureCancelButton.removeEventListener('click', onEditPictureFormClose);
+    hashtagsInput.removeEventListener('change', onHashtagsCheck);
+    hashtagsInput.removeEventListener('keydown', onInputFocused);
+    commentInput.removeEventListener('change',onCommentCheck);
+    commentInput.removeEventListener('keydown', onInputFocused);
+    smallScaleControl.removeEventListener('click', onPictureScaleChange);
+    bigScaleControl.removeEventListener('click', onPictureScaleChange);
+    effectPictureControl.removeEventListener('click', onPictureEffectAdded);
 
-  removeEffectOfPicture();
-  slider.noUiSlider.destroy();
+    removeEffectOfPicture();
+    slider.noUiSlider.destroy();
+  }
 };
 
 const onEscBtnPress = (e) => {
