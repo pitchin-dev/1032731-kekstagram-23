@@ -1,3 +1,5 @@
+const EFFECT_INPUT_VALUE = 100;
+
 const filters = {
   chrome: 'chrome',
   sepia: 'sepia',
@@ -11,7 +13,7 @@ const effectValueInput = document.querySelector('.effect-level__value');
 const picturePreview = document.querySelector('.img-upload__preview img');
 const {chrome, sepia, marvin, phobos, heat} = filters;
 
-const SLIDER_OPTIONS = {
+const sliderOptions = {
   [chrome]: {
     range: {
       min: 0,
@@ -75,7 +77,7 @@ const createSlider = () => {
     },
   });
 
-  effectValueInput.value = 100;
+  effectValueInput.value = EFFECT_INPUT_VALUE;
   slider.classList.add('hidden');
 };
 
@@ -110,10 +112,10 @@ const addPictureFilterStyle = (effect, value) => {
 };
 
 const changeSliderOptions = (effectName) => {
-  if (effectName in SLIDER_OPTIONS) {
+  if (effectName in sliderOptions) {
     slider.classList.remove('hidden');
     slider.noUiSlider.off('update');
-    slider.noUiSlider.updateOptions(SLIDER_OPTIONS[effectName]);
+    slider.noUiSlider.updateOptions(sliderOptions[effectName]);
     slider.noUiSlider.on('update', (values, handle) => {
       effectValueInput.value = `${values[handle]}`;
       addPictureFilterStyle(effectName, values[handle]);
