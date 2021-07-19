@@ -128,4 +128,5 @@ uploadPictureInput.addEventListener('change', () => {
     });
     reader.readAsDataURL(file);
   }
+  uploadPictureInput.blur();
 });
