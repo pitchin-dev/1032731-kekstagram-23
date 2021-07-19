@@ -45,6 +45,7 @@ const renderValidationMessages = (hashtags) => {
 const onHashtagsCheck = (e) => {
   const hashtags = e.target.value.split(' ');
   renderValidationMessages(hashtags);
+  e.preventDefault();
 };
 
 const onCommentCheck = (e) => {
