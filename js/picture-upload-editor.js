@@ -1,10 +1,9 @@
-import {checkStringLength, showSuccess, showErrorModal, formReset} from './utils/utils.js';
-import {createSlider, onPictureEffectAdded, removeEffectOfPicture, slider} from './noUISlider.js';
+import {showSuccess, showErrorModal, hidePopup, onEscBtnPress} from './utils/utils.js';
+import {onHashtagsCheck, onCommentCheck} from './validation.js';
+import {createSlider, onPictureEffectAdded, removeEffectOfPicture, slider} from './slider.js';
 import {sendData} from './api.js';
 
-const REG_EXP = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-const COMMENT_LENGTH_MAX = 140;
+const FILES_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const SCALE_VALUE_MIN = 25;
 const SCALE_VALUE_MAX = 100;
 const SCALE_VALUE_CHANGE = 25;
@@ -22,14 +21,7 @@ const effectPictureControl = document.querySelector('.effects__list');
 const sliderBar = document.querySelector('.effect-level');
 const editPictureForm = document.querySelector('.img-upload__form');
 
-const ERROR_MESSAGES = {
-  HASHTAG_SUM: 'Нельзя указать больше 5 (пяти) хэштегов',
-  HASHTAG_REPEAT: 'Хэштеги не должны повторяться',
-  HASHTAG_TEMPLATE: 'Хэштеги не соответствуют требованиям. Хэштег должен начинаться с знака #, не может содержать запрещённые символы: пробелы, спецсимволы, символы пунктуации, эмодзи.',
-  COMMENT_LENGTH: 'Длина комментария не должна быть больше, чем 140 (сто сорок) символов',
-};
-
-const zoomIn = (value) => {
+const setZoomIn = (value) => {
   if (value < SCALE_VALUE_MAX) {
     const scaleValue = value + SCALE_VALUE_CHANGE;
     scaleControlValue.value = `${scaleValue}%`;
@@ -37,7 +29,7 @@ const zoomIn = (value) => {
   }
 };
 
-const zoomOut = (value) => {
+const setZoomOut = (value) => {
   if (value > SCALE_VALUE_MIN) {
     const scaleValue = value - SCALE_VALUE_CHANGE;
     scaleControlValue.value = `${scaleValue}%`;
@@ -49,82 +41,38 @@ const onPictureScaleChange = ({ target }) => {
   const value = parseInt(scaleControlValue.value, 10);
 
   if (target === smallScaleControl) {
-    return zoomOut(value);
+    return setZoomOut(value);
   }
 
   if (target === bigScaleControl) {
-    return zoomIn(value);
+    return setZoomIn(value);
   }
 };
 
-const checkUniqueHashtags = (hashtags) => {
-  const uniqueValue = [];
-
-  for (let index = 0; index < hashtags.length; ++index) {
-    const value = hashtags[index].toLowerCase();
-    if (uniqueValue.indexOf(value) !== -1) {
-      return false;
-    }
-    uniqueValue.push(value);
-  }
-
-  return true;
-};
-
-const isFit = (hashtags, template) => hashtags.every((element) => template.test(element));
-
-const renderValidationMessages = (hashtags) => {
-  if (!isFit(hashtags, REG_EXP)) {
-    hashtagsInput.setCustomValidity(ERROR_MESSAGES.HASHTAG_TEMPLATE);
-  } else if (!checkUniqueHashtags(hashtags)) {
-    hashtagsInput.setCustomValidity(ERROR_MESSAGES.HASHTAG_REPEAT);
-  } else if (hashtags.length > 5) {
-    hashtagsInput.setCustomValidity(ERROR_MESSAGES.HASHTAG_SUM);
-  } else {
-    hashtagsInput.setCustomValidity('');
-  }
-  hashtagsInput.reportValidity();
-};
-
-const onHashtagsCheck = (e) => {
-  const hashtags = e.target.value.split(' ');
-  renderValidationMessages(hashtags);
-};
-
-const onCommentCheck = (e) => {
-  const {value} = e.target;
-  if(!checkStringLength(value, COMMENT_LENGTH_MAX)) {
-    commentInput.setCustomValidity(ERROR_MESSAGES.COMMENT_LENGTH);
-  } else {
-    commentInput.setCustomValidity('');
-  }
-  commentInput.reportValidity();
+const resetFormValues = () => {
+  uploadPictureInput.value = '';
+  picturePreview.style.transform = 'scale(1)';
+  effectPictureControl.children[0].querySelector('input[type="radio"]').checked = true;
+  hashtagsInput.value = '';
+  commentInput.value = '';
 };
 
 const onEditPictureFormClose = (e) => {
   if (hashtagsInput === document.activeElement || commentInput === document.activeElement) {
     e.stopPropagation();
   } else {
-    uploadPictureInput.value = '';
-    editPictureModal.classList.add('hidden');
-    document.body.classList.remove('modal-open');
+    resetFormValues();
+    hidePopup(editPictureModal, 'modal-open', 'hidden');
 
     editPictureCancelButton.removeEventListener('click', onEditPictureFormClose);
-    hashtagsInput.removeEventListener('change', onHashtagsCheck);
-    commentInput.removeEventListener('change',onCommentCheck);
+    hashtagsInput.removeEventListener('input', onHashtagsCheck);
+    commentInput.removeEventListener('input',onCommentCheck);
     smallScaleControl.removeEventListener('click', onPictureScaleChange);
     bigScaleControl.removeEventListener('click', onPictureScaleChange);
     effectPictureControl.removeEventListener('click', onPictureEffectAdded);
 
     removeEffectOfPicture();
     slider.noUiSlider.destroy();
-  }
-};
-
-const onEscBtnPress = (e) => {
-  if (e.key === 'Escape') {
-    onEditPictureFormClose();
-    document.removeEventListener('keydown', onEscBtnPress);
   }
 };
 
@@ -142,7 +90,6 @@ const setFormSubmit = (e) => {
     },
     new FormData(e.target),
   );
-  formReset(editPictureForm);
 };
 
 const showEditPictureForm = () => {
@@ -150,10 +97,11 @@ const showEditPictureForm = () => {
   document.body.classList.add('modal-open');
   sliderBar.style.display = 'none';
   picturePreview.style.removeProperty('transform');
+  scaleControlValue.value = '100%';
   editPictureCancelButton.addEventListener('click', onEditPictureFormClose);
-  hashtagsInput.addEventListener('change', onHashtagsCheck);
-  commentInput.addEventListener('change', onCommentCheck);
-  document.addEventListener('keydown', onEscBtnPress);
+  hashtagsInput.addEventListener('input', onHashtagsCheck);
+  commentInput.addEventListener('input', onCommentCheck);
+  document.addEventListener('keydown', onEscBtnPress(onEditPictureFormClose));
   smallScaleControl.addEventListener('click', onPictureScaleChange);
   bigScaleControl.addEventListener('click', onPictureScaleChange);
   effectPictureControl.addEventListener('click', onPictureEffectAdded);
@@ -170,7 +118,7 @@ uploadPictureInput.addEventListener('change', () => {
 uploadPictureInput.addEventListener('change', () => {
   const file = uploadPictureInput.files[0];
   const fileName = file.name.toLowerCase();
-  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  const matches = FILES_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
     const reader = new FileReader();

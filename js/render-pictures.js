@@ -12,12 +12,12 @@ const imgFiltersBtn = document.querySelectorAll('.img-filters__button');
 const defaultPicturesBtn = imgFilters.querySelector('#filter-default');
 const randomPicturesBtn = imgFilters.querySelector('#filter-random');
 const discussedPicturesBtn = imgFilters.querySelector('#filter-discussed');
-let postListCopy = [];
+let copies = [];
 
 const renderPostsList = (posts) => {
-  postListCopy = posts;
+  copies = posts;
 
-  postListCopy.forEach(({ url, likes, comments }) => {
+  copies.forEach(({ url, likes, comments }) => {
     const postElement = pictureTemplate.cloneNode(true);
     postElement.querySelector('.picture__img').setAttribute('src', url);
     postElement.querySelector('.picture__likes').textContent = likes;
@@ -43,7 +43,7 @@ picturesContainer.addEventListener('click', (e) => {
   const target = e.target;
   if (target.closest('.picture__img')) {
     e.preventDefault();
-    const post = postListCopy.find(({url}) => url === target.getAttribute('src'));
+    const post = copies.find(({url}) => url === target.getAttribute('src'));
     showFullPhoto(post);
   }
 });

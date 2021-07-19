@@ -3,21 +3,6 @@ const ALERT_SHOW_TIME = 5000;
 const alertTemplate = document.querySelector('#error').content.querySelector('.error');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 
-const getRandomInt = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-
-  if (min < 0 || max < 0) {
-    return 'Cannot return random numbers. Min and max number must be positive';
-  }
-
-  if (max < min || max === min) {
-    return 'Cannot return random number. Check your max number, it cannot be less or identical to min number';
-  }
-
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
 const checkStringLength = (string, maxLength) => string.length <= maxLength;
 
 const showPopup = (popup, showClass, hideClass) => {
@@ -53,6 +38,13 @@ const closeErrorModal = () => {
   errorModal.remove();
 };
 
+const onEscBtnPress = (fn) => (e) => {
+  if (e.key === 'Escape') {
+    fn();
+    document.removeEventListener('keydown', onEscBtnPress);
+  }
+};
+
 const onEscBtnForErrorModal = (e) => {
   if (e.key === 'Escape') {
     document.removeEventListener('keydown', onEscBtnForErrorModal);
@@ -83,10 +75,6 @@ const showSuccess = () => {
   document.addEventListener('keydown', onEscBtnForSuccessModal);
 };
 
-const formReset = (form) => {
-  form.reset();
-};
-
 //https://learn.javascript.ru/task/shuffle
 const shuffle = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -95,4 +83,4 @@ const shuffle = (array) => {
   }
 };
 
-export {getRandomInt, checkStringLength, showPopup, hidePopup, showAlert, showSuccess, showErrorModal, formReset, shuffle};
+export {checkStringLength, showPopup, hidePopup, onEscBtnPress, showAlert, showSuccess, showErrorModal, shuffle};

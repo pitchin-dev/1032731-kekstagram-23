@@ -1,6 +1,6 @@
 import {showPopup, hidePopup} from './utils/utils.js';
+import {BLOCK_SIZE, createComment, onCommentsLoad} from './comments.js';
 
-const BLOCK_SIZE = 5;
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('img');
 const likes = bigPicture.querySelector('.likes-count');
@@ -23,39 +23,11 @@ const onCloseBtnClick = () => {
   document.removeEventListener('keydown', onEscBtnPress);
 };
 
-const createComment = (comment) => {
-  const commentElement = document.createElement('li');
-  commentElement.classList.add('social__comment');
-
-  const commentAvatar = document.createElement('img');
-  commentAvatar.classList.add('social__picture');
-  commentElement.appendChild(commentAvatar);
-
-  const commentText = document.createElement('p');
-  commentText.classList.add('social__text');
-  commentElement.appendChild(commentText);
-
-  commentAvatar.src = comment.avatar;
-  commentText.textContent = comment.message;
-  return commentElement;
-};
-
-const onCommentsLoad = (element, counter, fragment, array) => {
-  element.addEventListener('click', () => {
-    if (counter < array.comments.length) {
-      array.comments.slice(counter, counter + BLOCK_SIZE).forEach((comment) => {
-        fragment.appendChild(createComment(comment));
-      });
-
-      commentsBlock.appendChild(fragment);
-      socialCommentCount.innerHTML = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
-      counter += BLOCK_SIZE;
-    }
-
-    if (commentsBlock.children.length === array.comments.length) {
-      commentsLoader.classList.add('hidden');
-    }
-  });
+const setPhotoInfo = (array, img, commentsCount, likesCount, description) => {
+  img.src = array.url;
+  commentsCount.textContent = array.comments.length;
+  likesCount.textContent = array.likes;
+  description.textContent = array.description;
 };
 
 const showFullPhoto = (photo) => {
@@ -63,10 +35,7 @@ const showFullPhoto = (photo) => {
   showPopup(bigPicture, 'modal-open', 'hidden');
   let commentCounter = 0;
 
-  bigPictureImg.src = photo.url;
-  comments.textContent = photo.comments.length;
-  likes.textContent = photo.likes;
-  descriptionBlock.textContent = photo.description;
+  setPhotoInfo(photo, bigPictureImg, comments, likes, descriptionBlock);
 
   commentsBlock.innerHTML = '';
   commentsLoader.classList.remove('hidden');
@@ -81,12 +50,8 @@ const showFullPhoto = (photo) => {
     commentsLoader.classList.add('hidden');
   }
 
-  if (photo.comments.length) {
-    socialCommentCount.innerHTML = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
-  }
-
+  socialCommentCount.textContent = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
   commentCounter += BLOCK_SIZE;
-
   onCommentsLoad(commentsLoader, commentCounter, commentsBlockFragment, photo);
 
   closeBtn.addEventListener('click', onCloseBtnClick);
