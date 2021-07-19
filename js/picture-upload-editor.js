@@ -1,12 +1,8 @@
 import {showSuccess, showErrorModal, hidePopup, onEscBtnPress} from './utils/utils.js';
+import {onPictureScaleChange} from './scale.js';
 import {onHashtagsCheck, onCommentCheck} from './validation.js';
 import {createSlider, onPictureEffectAdded, removeEffectOfPicture, slider} from './slider.js';
 import {sendData} from './api.js';
-
-const FILES_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-const SCALE_VALUE_MIN = 25;
-const SCALE_VALUE_MAX = 100;
-const SCALE_VALUE_CHANGE = 25;
 
 const uploadPictureInput = document.querySelector('#upload-file');
 const editPictureModal = document.querySelector('.img-upload__overlay');
@@ -20,34 +16,6 @@ const picturePreview = editPictureModal.querySelector('.img-upload__preview img'
 const effectPictureControl = document.querySelector('.effects__list');
 const sliderBar = document.querySelector('.effect-level');
 const editPictureForm = document.querySelector('.img-upload__form');
-
-const setZoomIn = (value) => {
-  if (value < SCALE_VALUE_MAX) {
-    const scaleValue = value + SCALE_VALUE_CHANGE;
-    scaleControlValue.value = `${scaleValue}%`;
-    picturePreview.style.transform = `scale(${(scaleValue)/100})`;
-  }
-};
-
-const setZoomOut = (value) => {
-  if (value > SCALE_VALUE_MIN) {
-    const scaleValue = value - SCALE_VALUE_CHANGE;
-    scaleControlValue.value = `${scaleValue}%`;
-    picturePreview.style.transform = `scale(${(scaleValue)/100})`;
-  }
-};
-
-const onPictureScaleChange = ({ target }) => {
-  const value = parseInt(scaleControlValue.value, 10);
-
-  if (target === smallScaleControl) {
-    return setZoomOut(value);
-  }
-
-  if (target === bigScaleControl) {
-    return setZoomIn(value);
-  }
-};
 
 const resetFormValues = () => {
   uploadPictureInput.value = '';
@@ -113,20 +81,4 @@ uploadPictureInput.addEventListener('change', () => {
   if (uploadPictureInput.value) {
     showEditPictureForm(uploadPictureInput.value);
   }
-});
-
-uploadPictureInput.addEventListener('change', () => {
-  const file = uploadPictureInput.files[0];
-  const fileName = file.name.toLowerCase();
-  const matches = FILES_TYPES.some((it) => fileName.endsWith(it));
-
-  if (matches) {
-    const reader = new FileReader();
-
-    reader.addEventListener('load', () => {
-      picturePreview.src = reader.result;
-    });
-    reader.readAsDataURL(file);
-  }
-  uploadPictureInput.blur();
 });
