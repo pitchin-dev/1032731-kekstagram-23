@@ -36,7 +36,6 @@ const showFullPhoto = (photo) => {
   let commentCounter = 0;
 
   setPhotoInfo(photo, bigPictureImg, comments, likes, descriptionBlock);
-
   commentsBlock.innerHTML = '';
   commentsLoader.classList.remove('hidden');
 
