@@ -1,33 +1,21 @@
 const GET_DATA_URL = 'https://23.javascript.pages.academy/kekstagram/data';
 const SEND_DATA_URL = 'https://23.javascript.pages.academy/kekstagram';
 
+const fetchData = (method, url, onSuccess, onError, data) => {
+  if (method === 'GET') {
+    return fetch(url).then((res) => res.json()).then((res) => onSuccess(res)).catch(() => onError());
+  }
+  if (method === 'POST') {
+    return fetch(url, {method, body: data}).then(() => onSuccess()).catch(() => onError());
+  }
+};
+
 const getData = (onSuccess, onError) => {
-  fetch(GET_DATA_URL)
-    .then((res) => {
-      if (!res.ok) {
-        return onError();
-      }
-      return res.json();
-    })
-    .then(onSuccess)
-    .catch(() => onError());
+  fetchData('GET', GET_DATA_URL, onSuccess, onError);
 };
 
 const sendData = (onSuccess, onError, body) => {
-  fetch(
-    SEND_DATA_URL,
-    {
-      method: 'POST',
-      body,
-    },
-  )
-    .then((res) => {
-      if (!res.ok) {
-        return onError();
-      }
-      return onSuccess();
-    })
-    .catch(() => onError());
+  fetchData('POST', SEND_DATA_URL, onSuccess, onError, body);
 };
 
 export {getData, sendData};
