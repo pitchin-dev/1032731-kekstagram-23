@@ -1,4 +1,4 @@
-import {showSuccess, showErrorModal, hidePopup, onEscBtnPress} from './utils/utils.js';
+import {showSuccess, showErrorModal, hidePopup} from './utils/utils.js';
 import {onPictureScaleChange} from './scale.js';
 import {onHashtagsCheck, onCommentCheck} from './validation.js';
 import {createSlider, onPictureEffectAdded, removeEffectOfPicture, slider} from './slider.js';
@@ -26,21 +26,23 @@ const resetFormValues = () => {
 };
 
 const onEditPictureFormClose = (e) => {
-  if (hashtagsInput === document.activeElement || commentInput === document.activeElement) {
-    e.stopPropagation();
-  } else {
-    resetFormValues();
-    hidePopup(editPictureModal, 'modal-open', 'hidden');
+  resetFormValues();
+  hidePopup(editPictureModal, 'modal-open', 'hidden');
+  removeEffectOfPicture();
 
-    editPictureCancelButton.removeEventListener('click', onEditPictureFormClose);
-    hashtagsInput.removeEventListener('change', onHashtagsCheck);
-    commentInput.removeEventListener('change',onCommentCheck);
-    smallScaleControl.removeEventListener('click', onPictureScaleChange);
-    bigScaleControl.removeEventListener('click', onPictureScaleChange);
-    effectPictureControl.removeEventListener('click', onPictureEffectAdded);
+  editPictureCancelButton.removeEventListener('click', onEditPictureFormClose);
+  hashtagsInput.removeEventListener('input', onHashtagsCheck);
+  commentInput.removeEventListener('input',onCommentCheck);
+  smallScaleControl.removeEventListener('click', onPictureScaleChange);
+  bigScaleControl.removeEventListener('click', onPictureScaleChange);
+  effectPictureControl.removeEventListener('click', onPictureEffectAdded);
+  slider.noUiSlider.destroy();
+};
 
-    removeEffectOfPicture();
-    slider.noUiSlider.destroy();
+const onEscBtnPress = (evt) => {
+  if (evt.keyCode === 27) {
+    onEditPictureFormClose();
+    document.removeEventListener('keydown', onEscBtnPress);
   }
 };
 
@@ -67,9 +69,9 @@ const showEditPictureForm = () => {
   picturePreview.style.removeProperty('transform');
   scaleControlValue.value = '100%';
   editPictureCancelButton.addEventListener('click', onEditPictureFormClose);
-  hashtagsInput.addEventListener('change', onHashtagsCheck);
-  commentInput.addEventListener('change', onCommentCheck);
-  document.addEventListener('keydown', onEscBtnPress(onEditPictureFormClose));
+  hashtagsInput.addEventListener('input', onHashtagsCheck);
+  commentInput.addEventListener('input', onCommentCheck);
+  document.addEventListener('keydown', onEscBtnPress);
   smallScaleControl.addEventListener('click', onPictureScaleChange);
   bigScaleControl.addEventListener('click', onPictureScaleChange);
   effectPictureControl.addEventListener('click', onPictureEffectAdded);
