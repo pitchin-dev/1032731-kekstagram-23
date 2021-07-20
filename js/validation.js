@@ -14,14 +14,14 @@ const hashtagsInput = editPictureModal.querySelector('.text__hashtags');
 const commentInput = editPictureModal.querySelector('.text__description');
 
 const checkUniqueHashtags = (hashtags) => {
-  const uniqueValues = [];
+  const values = [];
 
-  for (let index = 0; index < hashtags.length; ++index) {
-    const value = hashtags[index].toLowerCase();
-    if (uniqueValues.indexOf(value) !== -1) {
+  for (let i = 0; i < hashtags.length; ++i) {
+    const value = hashtags[i].toLowerCase();
+    if (values.indexOf(value) !== -1) {
       return false;
     }
-    uniqueValues.push(value);
+    values.push(value);
   }
 
   return true;
