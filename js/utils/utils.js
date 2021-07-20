@@ -28,12 +28,6 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const onSuccessModalClose = () => {
-  document.removeEventListener('keydown', onSuccessModalClose);
-  const successModal = document.querySelector('.success');
-  successModal.remove();
-};
-
 const closeErrorModal = () => {
   const errorModal = document.querySelector('.error');
   errorModal.remove();
@@ -56,8 +50,15 @@ const onEscBtnForErrorModal = (e) => {
 const onEscBtnForSuccessModal = (e) => {
   if (e.key === 'Escape') {
     document.removeEventListener('keydown', onEscBtnForSuccessModal);
-    onSuccessModalClose();
+    const successModal = document.querySelector('.success');
+    successModal.remove();
   }
+};
+
+const onSuccessModalClose = () => {
+  const successModal = document.querySelector('.success');
+  successModal.remove();
+  document.removeEventListener('keydown', onEscBtnForSuccessModal);
 };
 
 const showErrorModal = () => {
