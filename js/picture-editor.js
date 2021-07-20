@@ -25,7 +25,7 @@ const resetFormValues = () => {
   commentInput.value = '';
 };
 
-const onEditPictureFormClose = (e) => {
+const onEditPictureFormClose = () => {
   resetFormValues();
   hidePopup(editPictureModal, 'modal-open', 'hidden');
   removeEffectOfPicture();
@@ -40,7 +40,7 @@ const onEditPictureFormClose = (e) => {
 };
 
 const onEscBtnPress = (evt) => {
-  if (evt.keyCode === 27) {
+  if (evt.key === 'Escape') {
     onEditPictureFormClose();
     document.removeEventListener('keydown', onEscBtnPress);
   }
