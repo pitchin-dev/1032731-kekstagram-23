@@ -39,8 +39,8 @@ const onEditPictureFormClose = () => {
   slider.noUiSlider.destroy();
 };
 
-const onEscBtnPress = (evt) => {
-  if (evt.key === 'Escape') {
+const onEscBtnPress = (e) => {
+  if (e.key === 'Escape') {
     onEditPictureFormClose();
     document.removeEventListener('keydown', onEscBtnPress);
   }
