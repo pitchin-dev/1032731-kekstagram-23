@@ -29,6 +29,7 @@ const showAlert = (message) => {
 };
 
 const onSuccessModalClose = () => {
+  document.removeEventListener('keydown', onSuccessModalClose);
   const successModal = document.querySelector('.success');
   successModal.remove();
 };
