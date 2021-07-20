@@ -4,10 +4,10 @@ const GET_DATA_URL = 'https://23.javascript.pages.academy/kekstagram/data';
 const SEND_DATA_URL = 'https://23.javascript.pages.academy/kekstagram';
 
 const fetchData = (method, url, onSuccess, onError, data) => {
-  if (GET_METHOD) {
+  if (method === GET_METHOD) {
     return fetch(url).then((res) => res.json()).then((res) => onSuccess(res)).catch(() => onError());
   }
-  if (POST_METHOD) {
+  if (method === POST_METHOD) {
     return fetch(url, {method, body: data}).then(() => onSuccess()).catch(() => onError());
   }
 };
