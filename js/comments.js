@@ -31,7 +31,7 @@ const onCommentsLoad = (element, counter, fragment, array) => {
       });
 
       commentsBlock.appendChild(fragment);
-      socialCommentCount.innerHTML = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
+      socialCommentCount.textContent = `${commentsBlock.children.length} из ${comments.textContent} комментариев`;
       counter += BLOCK_SIZE;
     }
 
