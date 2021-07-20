@@ -13,11 +13,11 @@ const fetchData = (method, url, onSuccess, onError, data) => {
 };
 
 const getData = (onSuccess, onError) => {
-  fetchData('GET', GET_DATA_URL, onSuccess, onError);
+  fetchData(GET_METHOD, GET_DATA_URL, onSuccess, onError);
 };
 
 const sendData = (onSuccess, onError, body) => {
-  fetchData('POST', SEND_DATA_URL, onSuccess, onError, body);
+  fetchData(POST_METHOD, SEND_DATA_URL, onSuccess, onError, body);
 };
 
 export {getData, sendData};
