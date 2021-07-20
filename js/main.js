@@ -1,7 +1,7 @@
 import {renderPhotoFilter, renderPostsList} from './render-pictures.js';
 import {getData} from './api.js';
 import {showAlert} from './utils/utils.js';
-import './picture-upload-editor.js';
+import './picture-editor.js';
 import './upload.js';
 
 getData((posts) => {
