@@ -33,8 +33,8 @@ const onEditPictureFormClose = (e) => {
     hidePopup(editPictureModal, 'modal-open', 'hidden');
 
     editPictureCancelButton.removeEventListener('click', onEditPictureFormClose);
-    hashtagsInput.removeEventListener('input', onHashtagsCheck);
-    commentInput.removeEventListener('input',onCommentCheck);
+    hashtagsInput.removeEventListener('change', onHashtagsCheck);
+    commentInput.removeEventListener('change',onCommentCheck);
     smallScaleControl.removeEventListener('click', onPictureScaleChange);
     bigScaleControl.removeEventListener('click', onPictureScaleChange);
     effectPictureControl.removeEventListener('click', onPictureEffectAdded);
@@ -67,8 +67,8 @@ const showEditPictureForm = () => {
   picturePreview.style.removeProperty('transform');
   scaleControlValue.value = '100%';
   editPictureCancelButton.addEventListener('click', onEditPictureFormClose);
-  hashtagsInput.addEventListener('input', onHashtagsCheck);
-  commentInput.addEventListener('input', onCommentCheck);
+  hashtagsInput.addEventListener('change', onHashtagsCheck);
+  commentInput.addEventListener('change', onCommentCheck);
   document.addEventListener('keydown', onEscBtnPress(onEditPictureFormClose));
   smallScaleControl.addEventListener('click', onPictureScaleChange);
   bigScaleControl.addEventListener('click', onPictureScaleChange);
